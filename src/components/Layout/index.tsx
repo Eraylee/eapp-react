@@ -1,5 +1,14 @@
-import React from "react";
-import { Container, Header, Content, Sidebar, Sidenav, Icon } from "rsuite";
+import React, { Suspense } from "react";
+import { Outlet } from "react-router";
+import {
+  Container,
+  Header,
+  Content,
+  Sidebar,
+  Sidenav,
+  Icon,
+  Loader,
+} from "rsuite";
 
 export default () => {
   return (
@@ -8,14 +17,14 @@ export default () => {
         <Sidenav.Header>
           <div>
             <Icon
-              icon="logo-analytics"
-              size="lg"
+              icon='logo-analytics'
+              size='lg'
               style={{ verticalAlign: 0 }}
             />
             <span style={{ marginLeft: 12 }}> BRAND</span>
           </div>
         </Sidenav.Header>
-        <Sidenav defaultOpenKeys={["3"]} appearance="subtle">
+        <Sidenav defaultOpenKeys={["3"]} appearance='subtle'>
           <Sidenav.Body></Sidenav.Body>
         </Sidenav>
       </Sidebar>
@@ -24,7 +33,13 @@ export default () => {
         <Header>
           <h2>Page Title</h2>
         </Header>
-        <Content>Content</Content>
+        <Content>
+          <Suspense
+            fallback={<Loader backdrop content='loading...' vertical />}
+          >
+            <Outlet />
+          </Suspense>
+        </Content>
       </Container>
     </Container>
   );
