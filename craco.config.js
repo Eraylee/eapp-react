@@ -3,9 +3,7 @@ const CracoAlias = require("craco-alias");
 
 module.exports = {
   reactScriptsVersion: "react-scripts" /* (default value) */,
-  babel: {
-    presets: [["rsuite", { style: true }]],
-  },
+
   plugins: [
     {
       plugin: CracoLessPlugin,
