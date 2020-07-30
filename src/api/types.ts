@@ -1,5 +1,3 @@
-import { Result } from "antd";
-
 export enum Enabled {
   TRUE = 1,
   FALSE = 2,
@@ -35,4 +33,17 @@ export interface Menu {
   path: string;
   visiable: Visiable;
   children: Menu[];
+}
+
+export interface User {
+  username: string;
+  nickname: string;
+  email: string;
+  phone: string;
+  avatar: string;
+}
+
+export interface LoginReq {
+  username: string;
+  password: string;
 }
