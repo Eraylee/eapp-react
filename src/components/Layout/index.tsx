@@ -1,7 +1,7 @@
-import React, { Suspense, useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { Layout, Menu } from "antd";
 import { Outlet } from "react-router";
-import { Spin } from "antd";
+
 import "./style.less";
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -38,9 +38,9 @@ export default () => {
         <Header className='site-layout-background' style={{ padding: 0 }} />
         <div style={{ height: 20 }} />
         <Content style={{ margin: "0 16px" }}>
-          <Suspense fallback={<Spin />}>
+  
             <Outlet />
-          </Suspense>
+      
         </Content>
         <Footer style={{ textAlign: "center" }}>Made by ❤ ERAYLEE</Footer>
       </Layout>

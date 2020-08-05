@@ -26,6 +26,7 @@ export enum MenuTypes {
 }
 
 export interface Menu {
+  id: number;
   name: string;
   action: string;
   icon: string;
@@ -36,6 +37,7 @@ export interface Menu {
 }
 
 export interface User {
+  id: number;
   username: string;
   nickname: string;
   email: string;
