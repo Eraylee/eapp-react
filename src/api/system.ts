@@ -1,5 +1,5 @@
 import { GET, POST } from "./base";
-import { Menu, LoginReq ,User } from "./types";
+import { Menu, LoginReq, User } from "./types";
 
 /**
  * 获取菜单树
@@ -17,6 +17,6 @@ export const apiAuthLlogin = (params: LoginReq): Promise<string> => {
 /**
  * 获取当前用户信息
  */
-export const apiSystemUser​GetProfile = (): Promise<User> => {
+export const apiSystemMenuGetProfile = (): Promise<User> => {
   return POST("​/system​/user​/getProfile");
 };
