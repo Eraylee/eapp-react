@@ -17,6 +17,6 @@ export const apiAuthLlogin = (params: LoginReq): Promise<string> => {
 /**
  * 获取当前用户信息
  */
-export const apiSystemMenuGetProfile = (): Promise<User> => {
-  return POST("​/system​/user​/getProfile");
+export const apiSystemUserGetProfile = (): Promise<User> => {
+  return POST("/system/user/getProfile");
 };

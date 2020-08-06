@@ -12,7 +12,7 @@ import { store } from "./store";
 function App() {
   return (
     <Provider store={store}>
-      <IntlProvider locale='zh'>
+      <IntlProvider locale="zh">
         <ConfigProvider locale={zhCN}>
           <BrowserRouter>
             <Routes />

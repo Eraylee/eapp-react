@@ -27,22 +27,42 @@ export enum MenuTypes {
 
 export interface Menu {
   id: number;
+  sort: number;
+  enabled: number;
+  createdAt: Date;
+  updatedAt: Date;
   name: string;
   action: string;
   icon: string;
-  type: MenuTypes;
+  type: number;
   path: string;
-  visiable: Visiable;
-  children: Menu[];
+  visiable: number;
+  children: Menu[]
+}
+
+export interface Role {
+  id: number;
+  sort: number;
+  enabled: number;
+  createdAt: Date;
+  updatedAt: Date;
+  name: string;
+  code: string;
+  menus: Menu[];
 }
 
 export interface User {
   id: number;
+  sort: number;
+  enabled: number;
+  createdAt: Date;
+  updatedAt: Date;
   username: string;
   nickname: string;
   email: string;
   phone: string;
-  avatar: string;
+  avatar?: string;
+  roles: Role[];
 }
 
 export interface LoginReq {

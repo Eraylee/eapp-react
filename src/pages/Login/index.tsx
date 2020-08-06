@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Form, Input, Button, Checkbox } from "antd";
+import { Form, Input, Button } from "antd";
 import {
   UserOutlined,
   LockOutlined,
@@ -8,52 +8,56 @@ import {
 } from "@ant-design/icons";
 
 import "./style.less";
-import { LoginReq } from "@/api/types";
 import { useDispatch } from "react-redux";
 import { login } from "./action";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Login: React.FC = () => {
   const nav = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
-  const handleLogin = useCallback(async (values: LoginReq) => {
-    const res = dispatch(await login(values));
-    if (res) {
-      nav("/dashboard");
+
+  const handleLogin = useCallback(async (values) => {
+    const res = await dispatch(login(values));
+    if (!!res) {
+      const redirectUrl =
+        (location?.state as any)?.from?.pathname || "/dashboard";
+      nav(redirectUrl);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <div className='login-page-root'>
+    <div className="login-page-root">
       <Form
-        name='normal_login'
-        className='login-form'
+        name="normal_login"
+        className="login-form"
         initialValues={{ username: "", password: "" }}
         onFinish={handleLogin}
       >
         <Form.Item
-          name='username'
+          name="username"
           rules={[{ required: true, message: "Please input your Username!" }]}
         >
           <Input
-            prefix={<UserOutlined className='site-form-item-icon' />}
-            placeholder='Username'
+            prefix={<UserOutlined className="site-form-item-icon" />}
+            placeholder="Username"
           />
         </Form.Item>
         <Form.Item
-          name='password'
+          name="password"
           rules={[{ required: true, message: "Please input your Password!" }]}
         >
           <Input.Password
-            prefix={<LockOutlined className='site-form-item-icon' />}
-            placeholder='Password'
+            prefix={<LockOutlined className="site-form-item-icon" />}
+            placeholder="Password"
             iconRender={(visible) =>
               visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
             }
           />
         </Form.Item>
 
-        <Button type='primary' htmlType='submit' block>
+        <Button type="primary" htmlType="submit" block>
           Log in
         </Button>
       </Form>

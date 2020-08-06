@@ -1,11 +1,11 @@
 import { User } from "@/api/types";
-import { LoginActions, ADD_USER } from "./action";
+import { LoginActions, ADD_USER, CLEAR_USER } from "./action";
 
-export interface LoginState extends User {
+export interface LoginState extends Partial<User> {
   token: string;
 }
 
-const loginState: LoginState = {
+const initLoginState: LoginState = {
   id: 0,
   phone: "",
   username: "",
@@ -13,16 +13,18 @@ const loginState: LoginState = {
   email: "",
   token: "",
   avatar: "",
+  roles: [],
 };
 
 export const loginReducer = (
-  state = loginState,
+  state = initLoginState,
   actions: LoginActions
 ): LoginState => {
   switch (actions.type) {
     case ADD_USER:
-      const token = actions.payload;
-      return Object.assign({}, state, { token });
+      return Object.assign({}, state, actions.payload);
+    case CLEAR_USER:
+      return initLoginState;
     default:
       return state;
   }

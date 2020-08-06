@@ -1,6 +1,6 @@
 import React, { lazy } from "react";
 import { useRoutes } from "react-router-dom";
-import Layout from "@/components/Layout";
+import Layout from "@/pages/Layout";
 import Login from "@/pages/Login";
 import AuthorizedRoute from "@/components/AuthorizedRoute";
 

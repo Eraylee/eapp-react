@@ -18,10 +18,9 @@ axios.defaults.baseURL = BASE_API;
  */
 axios.interceptors.request.use(
   (config) => {
-    const USER_INFO = localStorage.getItem("USER_INFO");
-    if (USER_INFO) {
-      const token = JSON.parse(USER_INFO).token;
-      config.headers.Authorization = `Bearer ${token}`;
+    const TOKEN = localStorage.getItem("TOKEN");
+    if (TOKEN) {
+      config.headers.Authorization = `Bearer ${TOKEN}`;
     } else {
       delete config.headers.Authorization;
     }
@@ -36,14 +35,14 @@ axios.interceptors.request.use(
  */
 axios.interceptors.response.use(
   async (res: AxiosResponse) => {
-    return res?.data;
+    return res?.data?.data;
   },
   async (err: AxiosError) => {
     if (err?.response?.status === 401) {
       localStorage.removeItem("USER_INFO");
       message.error("请重新登录");
     }
-    return err?.response?.data;
+    return Promise.reject(err);
   }
 );
 
