@@ -18,7 +18,7 @@ const MenuLayout = ({ menus }: MenuLayoutProps) => {
     []
   );
   return (
-    <AMenu defaultSelectedKeys={["1"]} mode="inline">
+    <AMenu mode="inline">
       {menus.map((v) =>
         v.type === MenuTypes.LAYOUT ? (
           <SubMenu key={v.id} title={v.name}>

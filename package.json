@@ -16,6 +16,7 @@
     "craco-alias": "^2.1.1",
     "craco-less": "^1.17.0",
     "history": "^5.0.0",
+    "immer": "^7.0.7",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-intl": "^5.4.2",
@@ -36,7 +37,7 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "proxy": "http://192.168.10.102:8000",
+  "proxy": "http://192.168.123.47:8000",
   "browserslist": {
     "production": [
       ">0.2%",

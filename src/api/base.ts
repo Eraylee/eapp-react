@@ -39,8 +39,9 @@ axios.interceptors.response.use(
   },
   async (err: AxiosError) => {
     if (err?.response?.status === 401) {
-      localStorage.removeItem("USER_INFO");
+      localStorage.removeItem("TOKEN");
       message.error("请重新登录");
+      window.location.reload()
     }
     return Promise.reject(err);
   }
