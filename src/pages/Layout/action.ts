@@ -25,7 +25,6 @@ export const addMenuTree = (payload: Menu[]): AddMenuTree => ({
 export const getMenuTree = () => async (dispatch: Dispatch<AddMenuTree>) => {
   try {
     const menus = await apiSystemMenuGetTree();
-    console.log(menus);
     dispatch(addMenuTree(menus));
   } catch (error) {
     message.error("初始化菜单失败");

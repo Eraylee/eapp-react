@@ -1,17 +1,17 @@
 import { LayoutActions, ADD_MENU_TREE } from "./action";
-import produce from "immer";
+import produce, { Draft } from "immer";
 import { Menu } from "@/api/types";
 
 export interface LayoutState {
   menus: Menu[];
 }
 
-const iniState: LayoutState = {
+const initState: LayoutState = {
   menus: [],
 };
 
 export const layoutReducer = produce(
-  (state = iniState, actions: LayoutActions) => {
+  (state: Draft<LayoutState>, actions: LayoutActions) => {
     switch (actions.type) {
       case ADD_MENU_TREE:
         state.menus = actions.payload;
@@ -20,5 +20,5 @@ export const layoutReducer = produce(
         break;
     }
   },
-  {}
+  initState
 );

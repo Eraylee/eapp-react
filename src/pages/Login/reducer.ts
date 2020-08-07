@@ -1,24 +1,28 @@
 import { User } from "@/api/types";
-import produce from "immer";
+import produce, { Draft } from "immer";
 import { LoginActions, ADD_USER, CLEAR_USER } from "./action";
 
-export interface LoginState extends Partial<User> {}
+export interface LoginState {
+  user: Partial<User>;
+}
 
 const initLoginState: LoginState = {
-  id: 0,
-  phone: "",
-  username: "",
-  nickname: "",
-  email: "",
-  avatar: "",
-  roles: [],
+  user: {
+    id: 0,
+    phone: "",
+    username: "",
+    nickname: "",
+    email: "",
+    avatar: "",
+    roles: [],
+  },
 };
 
 export const loginReducer = produce(
-  (state = initLoginState, actions: LoginActions) => {
+  (state: Draft<LoginState>, actions: LoginActions) => {
     switch (actions.type) {
       case ADD_USER:
-        state = actions.payload;
+        state.user = actions.payload;
         break;
       case CLEAR_USER:
         state = initLoginState;
@@ -27,5 +31,5 @@ export const loginReducer = produce(
         break;
     }
   },
-  {}
+  initLoginState
 );

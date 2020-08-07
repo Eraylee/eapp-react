@@ -35,6 +35,7 @@ export const login = (payload: LoginReq) => async (
     const user = await apiSystemUserGetProfile();
     dispatch(addUser(user));
     localStorage.setItem("TOKEN", token);
+    localStorage.setItem("USER_INFO", JSON.stringify(user));
     return true;
   }
   return false;
