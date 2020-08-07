@@ -25,7 +25,7 @@ export const loginReducer = produce(
         state.user = actions.payload;
         break;
       case CLEAR_USER:
-        state = initLoginState;
+        state.user = initLoginState.user;
         break;
       default:
         break;

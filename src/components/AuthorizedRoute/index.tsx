@@ -1,8 +1,12 @@
-import React, { useEffect, Suspense, PropsWithChildren } from "react";
+import React, { useEffect, Suspense, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { Spin } from "antd";
 
-export default ({ children }: PropsWithChildren<{}>) => {
+export interface AuthorizedRouteProps {
+  element: ReactNode;
+}
+
+export default ({ element }: AuthorizedRouteProps) => {
   const navigate = useNavigate();
   useEffect(() => {
     const TOKEN = localStorage.getItem("TOKEN");
@@ -13,7 +17,7 @@ export default ({ children }: PropsWithChildren<{}>) => {
   }, []);
   return (
     <>
-      <Suspense fallback={<Spin />}>{children} </Suspense>
+      <Suspense fallback={<Spin />}>{element}</Suspense>
     </>
   );
 };

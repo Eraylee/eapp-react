@@ -22,42 +22,43 @@ const Login: React.FC = () => {
     if (!!res) {
       const redirectUrl =
         (location?.state as any)?.from?.pathname || "/dashboard";
+
       nav(redirectUrl);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <div className="login-page-root">
+    <div className='login-page-root'>
       <Form
-        name="normal_login"
-        className="login-form"
+        name='normal_login'
+        className='login-form'
         initialValues={{ username: "", password: "" }}
         onFinish={handleLogin}
       >
         <Form.Item
-          name="username"
+          name='username'
           rules={[{ required: true, message: "Please input your Username!" }]}
         >
           <Input
-            prefix={<UserOutlined className="site-form-item-icon" />}
-            placeholder="Username"
+            prefix={<UserOutlined className='site-form-item-icon' />}
+            placeholder='Username'
           />
         </Form.Item>
         <Form.Item
-          name="password"
+          name='password'
           rules={[{ required: true, message: "Please input your Password!" }]}
         >
           <Input.Password
-            prefix={<LockOutlined className="site-form-item-icon" />}
-            placeholder="Password"
+            prefix={<LockOutlined className='site-form-item-icon' />}
+            placeholder='Password'
             iconRender={(visible) =>
               visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
             }
           />
         </Form.Item>
 
-        <Button type="primary" htmlType="submit" block>
+        <Button type='primary' htmlType='submit' block>
           Log in
         </Button>
       </Form>
