@@ -20,3 +20,10 @@ export const apiAuthLlogin = (params: LoginReq): Promise<string> => {
 export const apiSystemUserGetProfile = (): Promise<User> => {
   return POST("/system/user/getProfile");
 };
+
+/**
+ * 获取所有菜单树
+ */
+export const apiSystemMenugetAllTree = (): Promise<Menu[]> => {
+  return GET("/system/menu/getAllTree");
+};

@@ -10,23 +10,23 @@ import TabsLayout from "./Tabs";
 const { Header, Content, Footer, Sider } = Layout;
 
 export default () => {
-  const [expand, setExpand] = useState(true);
+  const [collapsed, setCollapsed] = useState(false);
   const handleToggle = useCallback(() => {
-    setExpand((v) => !v);
+    setCollapsed((v) => !v);
   }, []);
 
   return (
-    <Layout className='layout-root'>
+    <Layout className="layout-root">
       <Sider
-        theme='light'
+        theme="light"
         collapsible
-        collapsed={expand}
+        collapsed={collapsed}
         onCollapse={handleToggle}
       >
         <SiderLayout />
       </Sider>
-      <Layout className='layout'>
-        <Header className='header'>
+      <Layout className="layout">
+        <Header className="header">
           <HeaderLayout />
         </Header>
         <div style={{ height: 20 }} />
