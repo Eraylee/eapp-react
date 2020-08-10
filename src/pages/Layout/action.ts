@@ -5,19 +5,23 @@ import { Menu } from "@/api/types";
 import { message } from "antd";
 import { TabItem } from "./reducer";
 
-export const ADD_MENU_TREE = "ADD_MENU_TREE";
+export const SET_MENU_TREE = "SET_MENU_TREE";
 export const ADD_TAB = "ADD_TAB";
+export const SET_TABS = "SET_TABS";
 export const REMOVE_TAB = "REMOVE_TAB";
 export const REMOVE_RIGHT_TABS = "REMOVE_RIGHT_TABS";
 export const REMOVE_OTHER_TABS = "REMOVE_OTHER_TABS";
 export const REMOVE_All_TABS = "REMOVE_All_TABS";
 export const SET_CURRENT_TAB_INDEX = "SET_CURRENT_TAB_INDEX";
 
-export interface AddMenuTree extends Action<typeof ADD_MENU_TREE> {
+export interface SetMenuTree extends Action<typeof SET_MENU_TREE> {
   payload: Menu[];
 }
 export interface AddTab extends Action<typeof ADD_TAB> {
   payload: TabItem;
+}
+export interface SetTabs extends Action<typeof SET_TABS> {
+  payload: TabItem[];
 }
 export interface RemoveTab extends Action<typeof REMOVE_TAB> {
   payload: string;
@@ -38,8 +42,8 @@ export interface SetCurrentTabIndex
  * 添加菜单树
  * @param payload
  */
-export const addMenuTree = (payload: Menu[]): AddMenuTree => ({
-  type: ADD_MENU_TREE,
+export const setMenuTree = (payload: Menu[]): SetMenuTree => ({
+  type: SET_MENU_TREE,
   payload,
 });
 /**
@@ -48,6 +52,13 @@ export const addMenuTree = (payload: Menu[]): AddMenuTree => ({
  */
 export const addTab = (payload: TabItem): AddTab => ({
   type: ADD_TAB,
+  payload,
+});
+/**
+ * 设置标签页
+ */
+export const setTabs = (payload: TabItem[]): SetTabs => ({
+  type: SET_TABS,
   payload,
 });
 /**
@@ -92,20 +103,21 @@ export const setCurrentTabIndex = (payload: number): SetCurrentTabIndex => ({
  * 登录
  * @param payload
  */
-export const getMenuTree = () => async (dispatch: Dispatch<AddMenuTree>) => {
+export const getMenuTree = () => async (dispatch: Dispatch<SetMenuTree>) => {
   try {
     const menus = await apiSystemMenuGetTree();
-    dispatch(addMenuTree(menus));
+    dispatch(setMenuTree(menus));
   } catch (error) {
     message.error("初始化菜单失败");
   }
 };
 
 export type LayoutActions =
-  | AddMenuTree
+  | SetMenuTree
   | AddTab
   | RemoveTab
   | SetCurrentTabIndex
   | RemoveRightTabs
   | RemoveOtherTabs
-  | RemoveAllTabs;
+  | RemoveAllTabs
+  | SetTabs;

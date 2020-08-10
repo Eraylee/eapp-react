@@ -11,6 +11,7 @@
     "@types/jest": "^24.0.0",
     "@types/node": "^12.0.0",
     "@types/react-redux": "^7.1.9",
+    "ahooks": "^2.4.0",
     "antd": "^4.5.1",
     "axios": "^0.19.2",
     "craco-alias": "^2.1.1",
@@ -37,7 +38,7 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "proxy": "http://192.168.10.102:8000",
+  "proxy": "http://localhost:8000",
   "browserslist": {
     "production": [
       ">0.2%",

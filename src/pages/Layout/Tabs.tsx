@@ -17,6 +17,7 @@ export default () => {
   const dispatch = useDispatch();
   const nav = useNavigate();
   const { tabs } = useSelector((state: AppState) => state.layoutReducer);
+
   const handleEdit = useCallback((key, action) => {
     if (action === "remove") {
       dispatch(removeTab(key));
@@ -112,17 +113,17 @@ export default () => {
   return (
     <Tabs
       hideAdd
-      className="layout-tabs-root"
-      size="small"
+      className='layout-tabs-root'
+      size='small'
       onEdit={handleEdit}
-      type="editable-card"
+      type='editable-card'
       onTabClick={handleClick}
     >
       {tabs.map((v, k) => (
         <TabPane
           tab={
             <Dropdown overlay={getMenuItems(v, k)} trigger={["contextMenu"]}>
-              <Button type="text">{v.title}</Button>
+              <Button type='text'>{v.title}</Button>
             </Dropdown>
           }
           key={v.key}
