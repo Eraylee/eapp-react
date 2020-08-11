@@ -1,109 +1,65 @@
-import { Action } from "redux";
-import { apiSystemMenuGetTree } from "@/api/system";
+import { apiSystemMenuGetTree } from "@/api/apis/system";
 import { Dispatch } from "react";
-import { Menu } from "@/api/types";
+import { Menu } from "@/api/apis/system";
 import { message } from "antd";
 import { TabItem } from "./reducer";
+import { deprecated, ActionType } from "typesafe-actions";
 
-export const SET_MENU_TREE = "SET_MENU_TREE";
-export const ADD_TAB = "ADD_TAB";
-export const SET_TABS = "SET_TABS";
-export const REMOVE_TAB = "REMOVE_TAB";
-export const REMOVE_RIGHT_TABS = "REMOVE_RIGHT_TABS";
-export const REMOVE_OTHER_TABS = "REMOVE_OTHER_TABS";
-export const REMOVE_All_TABS = "REMOVE_All_TABS";
-export const SET_CURRENT_TAB_INDEX = "SET_CURRENT_TAB_INDEX";
-
-export interface SetMenuTree extends Action<typeof SET_MENU_TREE> {
-  payload: Menu[];
-}
-export interface AddTab extends Action<typeof ADD_TAB> {
-  payload: TabItem;
-}
-export interface SetTabs extends Action<typeof SET_TABS> {
-  payload: TabItem[];
-}
-export interface RemoveTab extends Action<typeof REMOVE_TAB> {
-  payload: string;
-}
-export interface RemoveRightTabs extends Action<typeof REMOVE_RIGHT_TABS> {
-  payload: string;
-}
-export interface RemoveOtherTabs extends Action<typeof REMOVE_OTHER_TABS> {
-  payload: string;
-}
-export interface RemoveAllTabs extends Action<typeof REMOVE_All_TABS> {}
-
-export interface SetCurrentTabIndex
-  extends Action<typeof SET_CURRENT_TAB_INDEX> {
-  payload: number;
-}
+const { createAction } = deprecated;
 /**
  * 添加菜单树
- * @param payload
  */
-export const setMenuTree = (payload: Menu[]): SetMenuTree => ({
-  type: SET_MENU_TREE,
-  payload,
+export const setMenuTree = createAction("layout/SET_MENU_TREE", (action) => {
+  return (menus: Menu[]) => action(menus);
 });
 /**
  * 添加标签页
- * @param payload
  */
-export const addTab = (payload: TabItem): AddTab => ({
-  type: ADD_TAB,
-  payload,
+export const addTab = createAction("layout/ADD_TAB", (action) => {
+  return (tab: TabItem) => action(tab);
 });
 /**
  * 设置标签页
  */
-export const setTabs = (payload: TabItem[]): SetTabs => ({
-  type: SET_TABS,
-  payload,
+export const setTabs = createAction("layout/SET_TABS", (action) => {
+  return (tabs: TabItem[]) => action(tabs);
 });
 /**
  * 删除标签页
- * @param payload
  */
-export const removeTab = (payload: string): RemoveTab => ({
-  type: REMOVE_TAB,
-  payload,
+export const removeTab = createAction("layout/REMOVE_TAB", (action) => {
+  return (key: string) => action(key);
 });
 /**
  * 删除右侧标签
- * @param payload
  */
-export const removeRightTabs = (payload: string): RemoveRightTabs => ({
-  type: REMOVE_RIGHT_TABS,
-  payload,
-});
+export const removeRightTabs = createAction(
+  "layout/REMOVE_RIGHT_TABS",
+  (action) => {
+    return (key: string) => action(key);
+  }
+);
 /**
  * 删除其他标签
- * @param payload
  */
-export const removeOtherTabs = (payload: string): RemoveOtherTabs => ({
-  type: REMOVE_OTHER_TABS,
-  payload,
-});
+export const removeOtherTabs = createAction(
+  "layout/REMOVE_OTHER_TABS",
+  (action) => {
+    return (key: string) => action(key);
+  }
+);
 /**
  * 删除全部标签页
  */
-export const removeAllTabs = (): RemoveAllTabs => ({
-  type: REMOVE_All_TABS,
-});
-/**
- * 设置当前活跃tab索引
- * @param payload
- */
-export const setCurrentTabIndex = (payload: number): SetCurrentTabIndex => ({
-  type: SET_CURRENT_TAB_INDEX,
-  payload,
-});
+export const removeAllTabs = createAction("layout/REMOVE_ALL_TABS");
+
 /**
  * 登录
  * @param payload
  */
-export const getMenuTree = () => async (dispatch: Dispatch<SetMenuTree>) => {
+export const getMenuTree = () => async (
+  dispatch: Dispatch<ActionType<typeof setMenuTree>>
+) => {
   try {
     const menus = await apiSystemMenuGetTree();
     dispatch(setMenuTree(menus));
@@ -111,13 +67,3 @@ export const getMenuTree = () => async (dispatch: Dispatch<SetMenuTree>) => {
     message.error("初始化菜单失败");
   }
 };
-
-export type LayoutActions =
-  | SetMenuTree
-  | AddTab
-  | RemoveTab
-  | SetCurrentTabIndex
-  | RemoveRightTabs
-  | RemoveOtherTabs
-  | RemoveAllTabs
-  | SetTabs;

@@ -1,35 +1,31 @@
-import { User } from "@/api/types";
+import { User } from "@/api/apis/system";
 import produce, { Draft } from "immer";
-import { LoginActions, ADD_USER, CLEAR_USER } from "./action";
+import { createReducer, ActionType } from "typesafe-actions";
+import { setUser, clearUser } from "./action";
+import * as actions from "./action";
 
 export interface LoginState {
   user: Partial<User>;
 }
 
-const initLoginState: LoginState = {
-  user: {
-    id: 0,
-    phone: "",
-    username: "",
-    nickname: "",
-    email: "",
-    avatar: "",
-    roles: [],
-  },
+type LoginActionType = ActionType<typeof actions>;
+
+const initState: LoginState = {
+  user: {},
 };
 
-export const loginReducer = produce(
-  (state: Draft<LoginState>, actions: LoginActions) => {
-    switch (actions.type) {
-      case ADD_USER:
-        state.user = actions.payload;
-        break;
-      case CLEAR_USER:
-        state.user = initLoginState.user;
-        break;
-      default:
-        break;
-    }
-  },
-  initLoginState
-);
+export const loginReducer = createReducer<LoginState, LoginActionType>(
+  initState
+)
+  .handleAction(
+    setUser,
+    produce((state: Draft<LoginState>, actions: ActionType<typeof setUser>) => {
+      state.user = actions.payload;
+    })
+  )
+  .handleAction(
+    clearUser,
+    produce((state: Draft<LoginState>) => {
+      state.user = initState.user;
+    })
+  );

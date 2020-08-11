@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from "react";
 import { Menu as AMenu } from "antd";
-import { MenuTypes, Menu } from "@/api/types";
+import { MenuTypes, Menu } from "@/api/apis/system";
 import { useNavigate } from "react-router-dom";
 
 import * as icons from "@ant-design/icons";
@@ -40,10 +40,10 @@ export default () => {
   const { menus } = useSelector((state: AppState) => state.layoutReducer);
   return (
     <>
-      <div className='logo'>
+      <div className="logo">
         <p>ERAYLEE</p>
       </div>
-      <AMenu mode='inline'>
+      <AMenu mode="inline">
         {menus.map((v) =>
           v.type === MenuTypes.LAYOUT ? (
             <SubMenu key={v.id} title={v.name} icon={getIcon(v.icon)}>

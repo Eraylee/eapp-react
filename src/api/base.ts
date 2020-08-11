@@ -1,6 +1,20 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { message } from "antd";
 
+
+
+export interface Result<T> {
+  code: number;
+  message: string;
+  data: T;
+}
+
+export enum OrderTypes {
+  DESC,
+  ASC,
+}
+
+
 let BASE_API = "";
 
 if (process.env.NODE_ENV !== "development") {
@@ -41,7 +55,7 @@ axios.interceptors.response.use(
     if (err?.response?.status === 401) {
       localStorage.removeItem("TOKEN");
       message.error("请重新登录");
-      window.location.reload()
+      window.location.reload();
     }
     return Promise.reject(err);
   }

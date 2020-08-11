@@ -1,10 +1,9 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { Tabs, Menu, Dropdown, Button } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { AppState } from "@/store";
 import {
   removeTab,
-  setCurrentTabIndex,
   removeRightTabs,
   removeAllTabs,
   removeOtherTabs,
@@ -17,7 +16,11 @@ export default () => {
   const dispatch = useDispatch();
   const nav = useNavigate();
   const { tabs } = useSelector((state: AppState) => state.layoutReducer);
-
+  //刷新之后调转到首页
+  useEffect(() => {
+    nav("/dashboard");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const handleEdit = useCallback((key, action) => {
     if (action === "remove") {
       dispatch(removeTab(key));
@@ -99,10 +102,8 @@ export default () => {
 
   const handleClick = useCallback(
     (key) => {
-      const currentTabIndex = tabs.findIndex((v) => v.key === key);
       const currentTab = tabs.find((v) => v.key === key);
       if (currentTab) {
-        dispatch(setCurrentTabIndex(currentTabIndex));
         nav(currentTab.path);
       }
     },
@@ -113,17 +114,17 @@ export default () => {
   return (
     <Tabs
       hideAdd
-      className='layout-tabs-root'
-      size='small'
+      className="layout-tabs-root"
+      size="small"
       onEdit={handleEdit}
-      type='editable-card'
+      type="editable-card"
       onTabClick={handleClick}
     >
       {tabs.map((v, k) => (
         <TabPane
           tab={
             <Dropdown overlay={getMenuItems(v, k)} trigger={["contextMenu"]}>
-              <Button type='text'>{v.title}</Button>
+              <Button type="text">{v.title}</Button>
             </Dropdown>
           }
           key={v.key}

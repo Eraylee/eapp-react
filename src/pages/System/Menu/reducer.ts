@@ -1,24 +1,38 @@
-import { Menu } from "@/api/types";
+import { Menu } from "@/api/apis/system";
 import produce, { Draft } from "immer";
-import { menuActions, SET_MENU_TREE } from "./action";
+import { createReducer, ActionType } from "typesafe-actions";
+import { setMenuTreeData, setFormValue } from "./action";
+import * as actions from "./action";
 
 export interface MenuState {
   menus: Menu[];
+  formValue: Partial<Menu>;
 }
 
 const initState: MenuState = {
   menus: [],
+  formValue: {},
 };
 
-export const menuReducer = produce(
-  (state: Draft<MenuState>, actions: menuActions) => {
-    switch (actions.type) {
-      case SET_MENU_TREE:
+type MenuActionType = ActionType<typeof actions>;
+
+export const menuReducer = createReducer<MenuState, MenuActionType>(initState)
+  .handleAction(
+    setMenuTreeData,
+    produce(
+      (
+        state: Draft<MenuState>,
+        actions: ActionType<typeof setMenuTreeData>
+      ) => {
         state.menus = actions.payload;
-        break;
-      default:
-        break;
-    }
-  },
-  initState
-);
+      }
+    )
+  )
+  .handleAction(
+    setFormValue,
+    produce(
+      (state: Draft<MenuState>, actions: ActionType<typeof setFormValue>) => {
+        state.formValue = actions.payload;
+      }
+    )
+  );

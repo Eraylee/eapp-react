@@ -1,16 +1,18 @@
-import {
-  LayoutActions,
-  SET_MENU_TREE,
-  ADD_TAB,
-  REMOVE_TAB,
-  SET_CURRENT_TAB_INDEX,
-  REMOVE_RIGHT_TABS,
-  REMOVE_OTHER_TABS,
-  REMOVE_All_TABS,
-  SET_TABS,
-} from "./action";
 import produce, { Draft } from "immer";
-import { Menu } from "@/api/types";
+import { Menu } from "@/api/apis/system";
+import { createReducer, ActionType } from "typesafe-actions";
+import * as actions from "./action";
+import {
+  setMenuTree,
+  setTabs,
+  addTab,
+  removeAllTabs,
+  removeRightTabs,
+  removeOtherTabs,
+  removeTab,
+} from "./action";
+
+type LayoutActionType = ActionType<typeof actions>;
 
 export interface TabItem {
   title: string;
@@ -30,41 +32,67 @@ const initState: LayoutState = {
   currentTabIndex: 0,
 };
 
-export const layoutReducer = produce(
-  (state: Draft<LayoutState>, actions: LayoutActions) => {
-    switch (actions.type) {
-      case SET_MENU_TREE:
+export const layoutReducer = createReducer<LayoutState, LayoutActionType>(
+  initState
+)
+  .handleAction(
+    setMenuTree,
+    produce(
+      (state: Draft<LayoutState>, actions: ActionType<typeof setMenuTree>) => {
         state.menus = actions.payload;
-        break;
-      case ADD_TAB:
-        if (!state.tabs.find((v) => v.key === actions.payload.key)) {
-          state.tabs.push(actions.payload);
-        }
-        break;
-      case SET_TABS:
+      }
+    )
+  )
+  .handleAction(
+    addTab,
+    produce((state: Draft<LayoutState>, actions: ActionType<typeof addTab>) => {
+      state.tabs.push(actions.payload);
+    })
+  )
+  .handleAction(
+    setTabs,
+    produce(
+      (state: Draft<LayoutState>, actions: ActionType<typeof setTabs>) => {
         state.tabs = actions.payload;
-        break;
-      case REMOVE_TAB:
-        state.tabs = state.tabs.filter((v) => v.key !== actions.payload);
-        break;
-      case REMOVE_RIGHT_TABS:
+      }
+    )
+  )
+  .handleAction(
+    removeAllTabs,
+    produce((state: Draft<LayoutState>) => {
+      state.tabs = state.tabs.filter((v, K) => K === 0);
+    })
+  )
+  .handleAction(
+    removeRightTabs,
+    produce(
+      (
+        state: Draft<LayoutState>,
+        actions: ActionType<typeof removeRightTabs>
+      ) => {
         const index = state.tabs.findIndex((v) => v.key === actions.payload);
         state.tabs = state.tabs.filter((v, k) => k <= index);
-        break;
-      case REMOVE_OTHER_TABS:
+      }
+    )
+  )
+  .handleAction(
+    removeOtherTabs,
+    produce(
+      (
+        state: Draft<LayoutState>,
+        actions: ActionType<typeof removeOtherTabs>
+      ) => {
         state.tabs = state.tabs.filter(
           (v, K) => v.key === actions.payload || K === 0
         );
-        break;
-      case REMOVE_All_TABS:
-        state.tabs = state.tabs.filter((v, K) => K === 0);
-        break;
-      case SET_CURRENT_TAB_INDEX:
-        state.currentTabIndex = actions.payload;
-        break;
-      default:
-        break;
-    }
-  },
-  initState
-);
+      }
+    )
+  )
+  .handleAction(
+    removeTab,
+    produce(
+      (state: Draft<LayoutState>, actions: ActionType<typeof removeTab>) => {
+        state.tabs = state.tabs.filter((v) => v.key !== actions.payload);
+      }
+    )
+  );

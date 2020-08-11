@@ -1,42 +1,27 @@
-import { LoginReq, User } from "@/api/types";
-import { Action } from "redux";
-import { apiAuthLlogin, apiSystemUserGetProfile } from "@/api/system";
+import { LoginReq, User } from "@/api/apis/system";
+import { apiAuthLlogin, apiSystemUserGetProfile } from "@/api/apis/system";
 import { Dispatch } from "react";
 import { message } from "antd";
+import { deprecated, ActionType } from "typesafe-actions";
+const { createAction } = deprecated;
 
-export const LOGIN = "LOGIN";
-export const LOGOUT = "LOGOUT";
-export const ADD_USER = "ADD_USER";
-export const CLEAR_USER = "CLEAR_USER";
-
-export interface AddUser extends Action<typeof ADD_USER> {
-  payload: User;
-}
-export interface ClearUser extends Action<typeof CLEAR_USER> {}
-/**
- * 添加用户登录状态
- * @param payload
- */
-export const addUser = (payload: User): AddUser => ({
-  type: ADD_USER,
-  payload,
+export const setUser = createAction("login/SET_USER", (action) => {
+  return (user: User) => action(user);
 });
-/**
- * 清除用户信息
- */
-export const clearUser = (): ClearUser => ({ type: CLEAR_USER });
+
+export const clearUser = createAction("login/CLEAR_USER");
 /**
  * 登录
  * @param payload
  */
 export const login = (payload: LoginReq) => async (
-  dispatch: Dispatch<AddUser>
+  dispatch: any
 ): Promise<Boolean> => {
   try {
     const token = await apiAuthLlogin(payload);
     if (token) {
       const user = await apiSystemUserGetProfile();
-      dispatch(addUser(user));
+      dispatch(setUser(user));
       localStorage.setItem("TOKEN", token);
       localStorage.setItem("USER_INFO", JSON.stringify(user));
       message.success("登录成功");
@@ -50,9 +35,11 @@ export const login = (payload: LoginReq) => async (
 /**
  * 退出登录
  */
-export const logout = () => async (dispatch: Dispatch<ClearUser>) => {
+export const logout = () => async (
+  dispatch: Dispatch<ActionType<typeof clearUser>>
+) => {
   localStorage.removeItem("TOKEN");
   localStorage.removeItem("USER_INFO");
   dispatch(clearUser());
 };
-export type LoginActions = AddUser | ClearUser;
+

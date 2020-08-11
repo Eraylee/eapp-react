@@ -4,9 +4,10 @@ import { Card, Form, Row, Col, Button, Input, Space, Table, Tag } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { getMenuTreeData } from "./action";
 import { AppState } from "@/store";
-import { Menu } from "@/api/types";
+import { Menu } from "@/api/apis/system";
 import { ColumnsType } from "antd/lib/table";
 import Detail from "./Detail";
+import { OperateType } from "@/types";
 
 const menuTypes: { [key: string]: string } = {
   "1": "布局",
@@ -30,13 +31,13 @@ const columns: ColumnsType<Menu> = [
   {
     title: "类型",
     dataIndex: "type",
-    render: (value: string) => <Tag color='blue'>{menuTypes[value]}</Tag>,
+    render: (value: string) => <Tag color="blue">{menuTypes[value]}</Tag>,
   },
   {
     title: "操作",
     dataIndex: "tableAction",
     render: (text, record) => (
-      <Space size='middle'>
+      <Space size="middle">
         <a>修改</a>
         <a>删除</a>
       </Space>
@@ -47,6 +48,8 @@ const columns: ColumnsType<Menu> = [
 export default () => {
   const [form] = Form.useForm();
   const [open, setOpen] = useState(false);
+  const [currentId, setCurrentId] = useState(0);
+  const [operateType, setOperateType] = useState(OperateType.CREATE);
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
   const dispatch = useDispatch();
   const { menus } = useSelector((state: AppState) => state.menuReducer);
@@ -62,18 +65,18 @@ export default () => {
       <Card bordered={false}>
         <Form
           form={form}
-          name='advanced_search'
+          name="advanced_search"
           // onFinish={onFinish}
         >
           <Row gutter={8}>
             <Col span={6}>
-              <Form.Item name='name' label='名称' style={{ margin: 0 }}>
-                <Input placeholder='please input' />
+              <Form.Item name="name" label="名称" style={{ margin: 0 }}>
+                <Input placeholder="please input" />
               </Form.Item>
             </Col>
             <Col span={6}>
               <Space>
-                <Button type='primary' htmlType='submit'>
+                <Button type="primary" htmlType="submit">
                   Search
                 </Button>
                 <Button
@@ -91,7 +94,7 @@ export default () => {
       <div style={{ height: 16 }} />
       <Card bordered={false}>
         <Space>
-          <Button type='primary' onClick={() => setOpen(true)}>
+          <Button type="primary" onClick={() => setOpen(true)}>
             新建
           </Button>
           <Button
@@ -104,12 +107,14 @@ export default () => {
         </Space>
         <div style={{ height: 16 }} />
         <Table<Menu>
-          rowKey='id'
+          rowKey="id"
           columns={columns}
           rowSelection={{ onChange }}
           dataSource={menus as Menu[]}
         />
         <Detail
+          id={currentId}
+          operateType={operateType}
           onClose={() => setOpen(false)}
           visible={open}
           onOk={() => setOpen(false)}
