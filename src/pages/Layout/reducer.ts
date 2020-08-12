@@ -46,7 +46,9 @@ export const layoutReducer = createReducer<LayoutState, LayoutActionType>(
   .handleAction(
     addTab,
     produce((state: Draft<LayoutState>, actions: ActionType<typeof addTab>) => {
-      state.tabs.push(actions.payload);
+      if (!state.tabs.find((i) => i.key === actions.payload.key)) {
+        state.tabs.push(actions.payload);
+      }
     })
   )
   .handleAction(
