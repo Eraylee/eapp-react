@@ -4,11 +4,10 @@ import { BrowserRouter } from "react-router-dom";
 import { IntlProvider } from "react-intl";
 import { ConfigProvider } from "antd";
 import { Provider } from "react-redux";
-
 import zhCN from "antd/es/locale/zh_CN";
-import "@/assets/styles/global.less";
 import { store } from "./store";
 import { setUser } from "./pages/Login/action";
+import "@/styles/global.less";
 
 function App() {
   useEffect(() => {

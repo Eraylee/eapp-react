@@ -43,7 +43,7 @@ export default () => {
       <div className="logo">
         <p>ERAYLEE</p>
       </div>
-      <AMenu mode="inline">
+      <AMenu theme="dark" mode="inline">
         {menus.map((v) =>
           v.type === MenuTypes.LAYOUT ? (
             <SubMenu key={v.id} title={v.name} icon={getIcon(v.icon)}>

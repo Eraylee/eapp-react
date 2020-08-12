@@ -17,12 +17,7 @@ export default () => {
 
   return (
     <Layout className="layout-root">
-      <Sider
-        theme="light"
-        collapsible
-        collapsed={collapsed}
-        onCollapse={handleToggle}
-      >
+      <Sider collapsible collapsed={collapsed} onCollapse={handleToggle}>
         <SiderLayout />
       </Sider>
       <Layout className="layout">
