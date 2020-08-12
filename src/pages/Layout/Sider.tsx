@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect } from "react";
-import { Menu as AMenu } from "antd";
+import { Menu as AMenu, Card } from "antd";
 import { MenuTypes, Menu } from "@/api/apis/system";
 import { useNavigate } from "react-router-dom";
 
 import * as icons from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
 import { AppState } from "@/store";
-import { getMenuTree, addTab } from "./action";
+import { getMenuTree, addTab, setActiveKey } from "./action";
 import { Immutable } from "immer";
 
 const { SubMenu, Item } = AMenu;
@@ -32,6 +32,7 @@ export default () => {
           path: params.path,
         })
       );
+      dispatch(setActiveKey(String(params.id)));
       nav(params.path);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -39,11 +40,11 @@ export default () => {
   );
   const { menus } = useSelector((state: AppState) => state.layoutReducer);
   return (
-    <>
-      <div className="logo">
+    <Card bordered={false} className='layout-sider' bodyStyle={{ padding: 0 }}>
+      <div className='logo'>
         <p>ERAYLEE</p>
       </div>
-      <AMenu theme="dark" mode="inline">
+      <AMenu mode='inline'>
         {menus.map((v) =>
           v.type === MenuTypes.LAYOUT ? (
             <SubMenu key={v.id} title={v.name} icon={getIcon(v.icon)}>
@@ -64,6 +65,6 @@ export default () => {
           )
         )}
       </AMenu>
-    </>
+    </Card>
   );
 };

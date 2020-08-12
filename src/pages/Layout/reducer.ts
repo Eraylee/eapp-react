@@ -10,6 +10,8 @@ import {
   removeRightTabs,
   removeOtherTabs,
   removeTab,
+  setTheme,
+  setActiveKey,
 } from "./action";
 
 type LayoutActionType = ActionType<typeof actions>;
@@ -20,16 +22,28 @@ export interface TabItem {
   key: string;
 }
 
+export enum ThemeName {
+  LIGHT = "light",
+  DARK = "dark",
+}
+
+export interface Theme {
+  vars: { [key: string]: any };
+  name: ThemeName;
+}
+
 export interface LayoutState {
   menus: Menu[];
   tabs: TabItem[];
-  currentTabIndex: number;
+  activeKey: string;
+  theme: Theme;
 }
 
 const initState: LayoutState = {
   menus: [],
   tabs: [{ title: "首页", path: "/dashboard", key: "dashboard" }],
-  currentTabIndex: 0,
+  theme: { vars: {}, name: ThemeName.LIGHT },
+  activeKey: "dashboard",
 };
 
 export const layoutReducer = createReducer<LayoutState, LayoutActionType>(
@@ -56,6 +70,14 @@ export const layoutReducer = createReducer<LayoutState, LayoutActionType>(
     produce(
       (state: Draft<LayoutState>, actions: ActionType<typeof setTabs>) => {
         state.tabs = actions.payload;
+      }
+    )
+  )
+  .handleAction(
+    setActiveKey,
+    produce(
+      (state: Draft<LayoutState>, actions: ActionType<typeof setActiveKey>) => {
+        state.activeKey = actions.payload;
       }
     )
   )
@@ -95,6 +117,14 @@ export const layoutReducer = createReducer<LayoutState, LayoutActionType>(
     produce(
       (state: Draft<LayoutState>, actions: ActionType<typeof removeTab>) => {
         state.tabs = state.tabs.filter((v) => v.key !== actions.payload);
+      }
+    )
+  )
+  .handleAction(
+    setTheme,
+    produce(
+      (state: Draft<LayoutState>, actions: ActionType<typeof setTheme>) => {
+        state.theme = actions.payload;
       }
     )
   );

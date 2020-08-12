@@ -2,7 +2,7 @@ import { apiSystemMenuGetTree } from "@/api/apis/system";
 import { Dispatch } from "react";
 import { Menu } from "@/api/apis/system";
 import { message } from "antd";
-import { TabItem } from "./reducer";
+import { TabItem, Theme } from "./reducer";
 import { deprecated, ActionType } from "typesafe-actions";
 
 const { createAction } = deprecated;
@@ -23,6 +23,12 @@ export const addTab = createAction("layout/ADD_TAB", (action) => {
  */
 export const setTabs = createAction("layout/SET_TABS", (action) => {
   return (tabs: TabItem[]) => action(tabs);
+});
+/**
+ * 设置当前活跃tab key
+ */
+export const setActiveKey =  createAction("layout/SET_ACTIVE_KEY", (action) => {
+  return (key: string) => action(key);
 });
 /**
  * 删除标签页
@@ -52,6 +58,12 @@ export const removeOtherTabs = createAction(
  * 删除全部标签页
  */
 export const removeAllTabs = createAction("layout/REMOVE_ALL_TABS");
+/**
+ * 设置主题
+ */
+export const setTheme = createAction("layout/SET_THEME", (action) => {
+  return (theme: Theme) => action(theme);
+});
 
 /**
  * 登录

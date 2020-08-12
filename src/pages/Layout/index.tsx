@@ -16,12 +16,18 @@ export default () => {
   }, []);
 
   return (
-    <Layout className="layout-root">
-      <Sider collapsible collapsed={collapsed} onCollapse={handleToggle}>
+    <Layout className='layout-root'>
+      <Sider
+        className='sider'
+        theme='light'
+        collapsible
+        collapsed={collapsed}
+        onCollapse={handleToggle}
+      >
         <SiderLayout />
       </Sider>
-      <Layout className="layout">
-        <Header className="header">
+      <Layout className='layout'>
+        <Header className='header'>
           <HeaderLayout />
         </Header>
         <div style={{ height: 20 }} />

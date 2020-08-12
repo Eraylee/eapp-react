@@ -7,6 +7,7 @@ import {
   removeRightTabs,
   removeAllTabs,
   removeOtherTabs,
+  setActiveKey,
 } from "./action";
 import { useNavigate } from "react-router-dom";
 import { TabItem } from "./reducer";
@@ -15,7 +16,9 @@ const { TabPane } = Tabs;
 export default () => {
   const dispatch = useDispatch();
   const nav = useNavigate();
-  const { tabs } = useSelector((state: AppState) => state.layoutReducer);
+  const { tabs, activeKey } = useSelector(
+    (state: AppState) => state.layoutReducer
+  );
   //刷新之后调转到首页
   useEffect(() => {
     nav("/dashboard");
@@ -106,6 +109,7 @@ export default () => {
       if (currentTab) {
         nav(currentTab.path);
       }
+      dispatch(setActiveKey(key));
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [tabs]
@@ -114,17 +118,18 @@ export default () => {
   return (
     <Tabs
       hideAdd
-      className="layout-tabs-root"
-      size="small"
+      className='layout-tabs-root'
+      size='small'
       onEdit={handleEdit}
-      type="editable-card"
+      type='editable-card'
       onTabClick={handleClick}
+      activeKey={activeKey}
     >
       {tabs.map((v, k) => (
         <TabPane
           tab={
             <Dropdown overlay={getMenuItems(v, k)} trigger={["contextMenu"]}>
-              <Button type="text">{v.title}</Button>
+              <Button type='text'>{v.title}</Button>
             </Dropdown>
           }
           key={v.key}
