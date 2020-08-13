@@ -24,8 +24,8 @@ const lightVars = {
   ...getLessVars("./node_modules/antd/lib/style/themes/compact.less"),
   "@primary-color": themeVariables["@primary-color"],
 };
-fs.writeFileSync("./src/dark.json", JSON.stringify(darkVars));
-fs.writeFileSync("./src/light.json", JSON.stringify(lightVars));
+fs.writeFileSync("./src/themes/dark.json", JSON.stringify(darkVars));
+fs.writeFileSync("./src/themes/light.json", JSON.stringify(lightVars));
 
 const resolve = (dir) => path.join(__dirname, ".", dir);
 

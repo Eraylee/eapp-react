@@ -5,8 +5,8 @@ import { logout } from "../Login/action";
 import { useNavigate } from "react-router-dom";
 import { AppState } from "@/store";
 
-import darkVars from "@/dark.json";
-import lightVars from "@/light.json";
+import darkVars from "@/themes/dark.json";
+import lightVars from "@/themes/light.json";
 import { Theme, ThemeName } from "./reducer";
 import { setTheme } from "./action";
 
