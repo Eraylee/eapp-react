@@ -13,20 +13,19 @@ const { getLessVars } = require("antd-theme-generator");
 const themeVariables = getLessVars(
   path.join(__dirname, "./src/styles/vars.less")
 );
-const defaultVars = getLessVars(
-  "./node_modules/antd/lib/style/themes/default.less"
-);
+// const defaultVars = getLessVars(
+//   "./node_modules/antd/lib/style/themes/default.less"
+// );
 const darkVars = {
   ...getLessVars("./node_modules/antd/lib/style/themes/dark.less"),
-  "@primary-color": defaultVars["@primary-color"],
+  "@primary-color": themeVariables["@primary-color"],
 };
 const lightVars = {
   ...getLessVars("./node_modules/antd/lib/style/themes/compact.less"),
-  "@primary-color": defaultVars["@primary-color"],
+  "@primary-color": themeVariables["@primary-color"],
 };
 fs.writeFileSync("./src/dark.json", JSON.stringify(darkVars));
 fs.writeFileSync("./src/light.json", JSON.stringify(lightVars));
-fs.writeFileSync("./src/theme.json", JSON.stringify(themeVariables));
 
 const resolve = (dir) => path.join(__dirname, ".", dir);
 

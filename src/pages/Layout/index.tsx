@@ -6,28 +6,31 @@ import "./style.less";
 import SiderLayout from "./Sider";
 import HeaderLayout from "./Header";
 import TabsLayout from "./Tabs";
+import { AppState } from "@/store";
+import { useSelector } from "react-redux";
 
 const { Header, Content, Footer, Sider } = Layout;
 
 export default () => {
   const [collapsed, setCollapsed] = useState(false);
+  const { theme } = useSelector((state: AppState) => state.layoutReducer);
   const handleToggle = useCallback(() => {
     setCollapsed((v) => !v);
   }, []);
 
   return (
-    <Layout className='layout-root'>
+    <Layout className="layout-root">
       <Sider
-        className='sider'
-        theme='light'
+        className="sider"
+        theme={theme.name}
         collapsible
         collapsed={collapsed}
         onCollapse={handleToggle}
       >
-        <SiderLayout />
+        <SiderLayout themeName={theme.name} />
       </Sider>
-      <Layout className='layout'>
-        <Header className='header'>
+      <Layout className="layout">
+        <Header className="header">
           <HeaderLayout />
         </Header>
         <div style={{ height: 20 }} />

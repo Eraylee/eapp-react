@@ -2,7 +2,7 @@ import { apiSystemMenuGetTree } from "@/api/apis/system";
 import { Dispatch } from "react";
 import { Menu } from "@/api/apis/system";
 import { message } from "antd";
-import { TabItem, Theme } from "./reducer";
+import { TabItem, Theme, Locale } from "./reducer";
 import { deprecated, ActionType } from "typesafe-actions";
 
 const { createAction } = deprecated;
@@ -27,7 +27,7 @@ export const setTabs = createAction("layout/SET_TABS", (action) => {
 /**
  * 设置当前活跃tab key
  */
-export const setActiveKey =  createAction("layout/SET_ACTIVE_KEY", (action) => {
+export const setActiveKey = createAction("layout/SET_ACTIVE_KEY", (action) => {
   return (key: string) => action(key);
 });
 /**
@@ -63,6 +63,12 @@ export const removeAllTabs = createAction("layout/REMOVE_ALL_TABS");
  */
 export const setTheme = createAction("layout/SET_THEME", (action) => {
   return (theme: Theme) => action(theme);
+});
+/**
+ * 设置语言
+ */
+export const setLocale = createAction("layout/SET_LOCALE", (action) => {
+  return (locale: Locale) => action(locale);
 });
 
 /**

@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, Card } from "antd";
 import {
   UserOutlined,
   LockOutlined,
@@ -29,39 +29,41 @@ const Login: React.FC = () => {
   }, []);
 
   return (
-    <div className='login-page-root'>
-      <Form
-        name='normal_login'
-        className='login-form'
-        initialValues={{ username: "", password: "" }}
-        onFinish={handleLogin}
-      >
-        <Form.Item
-          name='username'
-          rules={[{ required: true, message: "Please input your Username!" }]}
+    <div className="login-page-root">
+      <Card bordered={false}>
+        <Form
+          name="normal_login"
+          className="login-form"
+          initialValues={{ username: "", password: "" }}
+          onFinish={handleLogin}
         >
-          <Input
-            prefix={<UserOutlined className='site-form-item-icon' />}
-            placeholder='Username'
-          />
-        </Form.Item>
-        <Form.Item
-          name='password'
-          rules={[{ required: true, message: "Please input your Password!" }]}
-        >
-          <Input.Password
-            prefix={<LockOutlined className='site-form-item-icon' />}
-            placeholder='Password'
-            iconRender={(visible) =>
-              visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-            }
-          />
-        </Form.Item>
+          <Form.Item
+            name="username"
+            rules={[{ required: true, message: "Please input your Username!" }]}
+          >
+            <Input
+              prefix={<UserOutlined className="site-form-item-icon" />}
+              placeholder="Username"
+            />
+          </Form.Item>
+          <Form.Item
+            name="password"
+            rules={[{ required: true, message: "Please input your Password!" }]}
+          >
+            <Input.Password
+              prefix={<LockOutlined className="site-form-item-icon" />}
+              placeholder="Password"
+              iconRender={(visible) =>
+                visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+              }
+            />
+          </Form.Item>
 
-        <Button type='primary' htmlType='submit' block>
-          Log in
-        </Button>
-      </Form>
+          <Button type="primary" htmlType="submit" block>
+            Log in
+          </Button>
+        </Form>
+      </Card>
     </div>
   );
 };

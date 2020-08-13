@@ -12,6 +12,7 @@ import {
   removeTab,
   setTheme,
   setActiveKey,
+  setLocale,
 } from "./action";
 
 type LayoutActionType = ActionType<typeof actions>;
@@ -20,6 +21,11 @@ export interface TabItem {
   title: string;
   path: string;
   key: string;
+}
+
+export enum Locale {
+  EN = "en_US",
+  ZH = "zh_CN",
 }
 
 export enum ThemeName {
@@ -37,6 +43,7 @@ export interface LayoutState {
   tabs: TabItem[];
   activeKey: string;
   theme: Theme;
+  locale: Locale;
 }
 
 const initState: LayoutState = {
@@ -44,6 +51,7 @@ const initState: LayoutState = {
   tabs: [{ title: "首页", path: "/dashboard", key: "dashboard" }],
   theme: { vars: {}, name: ThemeName.LIGHT },
   activeKey: "dashboard",
+  locale: Locale.ZH,
 };
 
 export const layoutReducer = createReducer<LayoutState, LayoutActionType>(
@@ -125,6 +133,14 @@ export const layoutReducer = createReducer<LayoutState, LayoutActionType>(
     produce(
       (state: Draft<LayoutState>, actions: ActionType<typeof setTheme>) => {
         state.theme = actions.payload;
+      }
+    )
+  )
+  .handleAction(
+    setLocale,
+    produce(
+      (state: Draft<LayoutState>, actions: ActionType<typeof setLocale>) => {
+        state.locale = actions.payload;
       }
     )
   );
