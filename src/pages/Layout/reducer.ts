@@ -12,7 +12,6 @@ import {
   removeTab,
   setTheme,
   setActiveKey,
-  setLocale,
 } from "./action";
 
 type LayoutActionType = ActionType<typeof actions>;
@@ -133,14 +132,6 @@ export const layoutReducer = createReducer<LayoutState, LayoutActionType>(
     produce(
       (state: Draft<LayoutState>, actions: ActionType<typeof setTheme>) => {
         state.theme = actions.payload;
-      }
-    )
-  )
-  .handleAction(
-    setLocale,
-    produce(
-      (state: Draft<LayoutState>, actions: ActionType<typeof setLocale>) => {
-        state.locale = actions.payload;
       }
     )
   );

@@ -29,38 +29,38 @@ const Login: React.FC = () => {
   }, []);
 
   return (
-    <div className="login-page-root">
+    <div className='login-page-root'>
       <Card bordered={false}>
         <Form
-          name="normal_login"
-          className="login-form"
+          name='normal_login'
+          className='login-form'
           initialValues={{ username: "", password: "" }}
           onFinish={handleLogin}
         >
           <Form.Item
-            name="username"
+            name='username'
             rules={[{ required: true, message: "Please input your Username!" }]}
           >
             <Input
-              prefix={<UserOutlined className="site-form-item-icon" />}
-              placeholder="Username"
+              prefix={<UserOutlined className='site-form-item-icon' />}
+              placeholder='用户名'
             />
           </Form.Item>
           <Form.Item
-            name="password"
+            name='password'
             rules={[{ required: true, message: "Please input your Password!" }]}
           >
             <Input.Password
-              prefix={<LockOutlined className="site-form-item-icon" />}
-              placeholder="Password"
+              prefix={<LockOutlined className='site-form-item-icon' />}
+              placeholder='密码'
               iconRender={(visible) =>
                 visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
               }
             />
           </Form.Item>
 
-          <Button type="primary" htmlType="submit" block>
-            Log in
+          <Button type='primary' htmlType='submit' block>
+            登录
           </Button>
         </Form>
       </Card>

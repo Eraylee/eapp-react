@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 
-import { Form, Input, Modal, Select } from "antd";
+import { Form, Input, Modal } from "antd";
 import { OperateType } from "@/types";
 import { useDispatch } from "react-redux";
 import { getFormValue } from "./action";
-const { Option } = Select;
+import ESelect, { DataSourceItem } from "@/components/Field/Eselect";
 
 interface DetailProps {
   id: number;
@@ -13,6 +13,21 @@ interface DetailProps {
   visible: boolean;
   operateType: OperateType;
 }
+
+const dataSource: DataSourceItem[] = [
+  {
+    label: "布局",
+    value: "1",
+  },
+  {
+    label: "接口",
+    value: "2",
+  },
+  {
+    label: "路由",
+    value: "3",
+  },
+];
 
 const Detail = ({ onClose, onOk, visible, operateType, id }: DetailProps) => {
   const dispatch = useDispatch();
@@ -26,21 +41,17 @@ const Detail = ({ onClose, onOk, visible, operateType, id }: DetailProps) => {
   return (
     <>
       <Modal
-        title="Basic Modal"
+        title='Basic Modal'
         visible={visible}
         onOk={onOk}
         onCancel={onClose}
       >
-        <Form form={form} layout="vertical">
-          <Form.Item label="名称">
-            <Input placeholder="please input" />
+        <Form form={form} layout='vertical'>
+          <Form.Item label='名称'>
+            <Input placeholder='请输入' />
           </Form.Item>
-          <Form.Item label="类型">
-            <Select allowClear>
-              <Option value="1">布局</Option>
-              <Option value="2">接口</Option>
-              <Option value="3">路由</Option>
-            </Select>
+          <Form.Item label='类型'>
+            <ESelect dataSource={dataSource} />
           </Form.Item>
         </Form>
       </Modal>
