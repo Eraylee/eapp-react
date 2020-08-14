@@ -1,7 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { message } from "antd";
-
-
+import { createBrowserHistory } from "history";
 
 export interface Result<T> {
   code: number;
@@ -13,7 +12,6 @@ export enum OrderTypes {
   DESC,
   ASC,
 }
-
 
 let BASE_API = "";
 
@@ -54,8 +52,10 @@ axios.interceptors.response.use(
   async (err: AxiosError) => {
     if (err?.response?.status === 401) {
       localStorage.removeItem("TOKEN");
-      message.error("请重新登录");
-      window.location.reload();
+      message.error(err?.response?.data?.message ?? "请重新登录");
+      const history = createBrowserHistory();
+      history.push("/login");
+      // window.location.reload();
     }
     return Promise.reject(err);
   }

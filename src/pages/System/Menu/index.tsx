@@ -8,6 +8,7 @@ import { Menu } from "@/api/apis/system";
 import { ColumnsType } from "antd/lib/table";
 import Detail from "./Detail";
 import { OperateType } from "@/types";
+import { EModal } from "@/components/EModal";
 
 const menuTypes: { [key: string]: string } = {
   "1": "布局",
@@ -48,8 +49,8 @@ const columns: ColumnsType<Menu> = [
 export default () => {
   const [form] = Form.useForm();
   const [open, setOpen] = useState(false);
-  const [currentId, setCurrentId] = useState(0);
-  const [operateType, setOperateType] = useState(OperateType.CREATE);
+  // const [currentId, setCurrentId] = useState(0);
+  // const [operateType, setOperateType] = useState(OperateType.CREATE);
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
   const dispatch = useDispatch();
   const { menus } = useSelector((state: AppState) => state.menuReducer);
@@ -60,6 +61,13 @@ export default () => {
   const onChange = useCallback((keys) => {
     setSelectedRowKeys(keys);
   }, []);
+  const handleOpen = () => {
+    EModal.show(<Detail />, {
+      onOk() {
+        console.log(3123123);
+      },
+    });
+  };
   return (
     <>
       <Card bordered={false}>
@@ -94,7 +102,7 @@ export default () => {
       <div style={{ height: 16 }} />
       <Card bordered={false}>
         <Space>
-          <Button type="primary" onClick={() => setOpen(true)}>
+          <Button type="primary" onClick={handleOpen}>
             新建
           </Button>
           <Button
@@ -112,13 +120,7 @@ export default () => {
           rowSelection={{ onChange }}
           dataSource={menus as Menu[]}
         />
-        <Detail
-          id={currentId}
-          operateType={operateType}
-          onClose={() => setOpen(false)}
-          visible={open}
-          onOk={() => setOpen(false)}
-        />
+        <EModal />
       </Card>
     </>
   );
