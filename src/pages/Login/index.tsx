@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { Form, Input, Button, Card } from "antd";
 import {
   UserOutlined,
@@ -17,16 +17,14 @@ const Login: React.FC = () => {
   const location = useLocation();
   const dispatch = useDispatch();
 
-  const handleLogin = useCallback(async (values) => {
+  const handleLogin = async (values: any) => {
     const res = await dispatch(login(values));
     if (!!res) {
       const redirectUrl =
         (location?.state as any)?.from?.pathname || "/dashboard";
-
       nav(redirectUrl);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  };
 
   return (
     <div className='login-page-root'>
@@ -37,19 +35,13 @@ const Login: React.FC = () => {
           initialValues={{ username: "", password: "" }}
           onFinish={handleLogin}
         >
-          <Form.Item
-            name='username'
-            rules={[{ required: true, message: "Please input your Username!" }]}
-          >
+          <Form.Item name='username' rules={[{ required: true }]}>
             <Input
               prefix={<UserOutlined className='site-form-item-icon' />}
               placeholder='用户名'
             />
           </Form.Item>
-          <Form.Item
-            name='password'
-            rules={[{ required: true, message: "Please input your Password!" }]}
-          >
+          <Form.Item name='password' rules={[{ required: true }]}>
             <Input.Password
               prefix={<LockOutlined className='site-form-item-icon' />}
               placeholder='密码'

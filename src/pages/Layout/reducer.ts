@@ -22,11 +22,6 @@ export interface TabItem {
   key: string;
 }
 
-export enum Locale {
-  EN = "en_US",
-  ZH = "zh_CN",
-}
-
 export enum ThemeName {
   LIGHT = "light",
   DARK = "dark",
@@ -42,7 +37,6 @@ export interface LayoutState {
   tabs: TabItem[];
   activeKey: string;
   theme: Theme;
-  locale: Locale;
 }
 
 const initState: LayoutState = {
@@ -50,7 +44,6 @@ const initState: LayoutState = {
   tabs: [{ title: "首页", path: "/dashboard", key: "dashboard" }],
   theme: { vars: {}, name: ThemeName.LIGHT },
   activeKey: "dashboard",
-  locale: Locale.ZH,
 };
 
 export const layoutReducer = createReducer<LayoutState, LayoutActionType>(

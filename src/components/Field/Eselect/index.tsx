@@ -6,7 +6,7 @@ const Option = Select.Option;
 
 export interface DataSourceItem {
   label: string;
-  value: string;
+  value: string | number;
 }
 
 export interface ESelectProps<T> extends SelectProps<T> {

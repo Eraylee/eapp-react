@@ -9,9 +9,15 @@ export interface MenuState {
   formValue: Partial<Menu>;
 }
 
-const initState: MenuState = {
+const initFormValue: Partial<Menu> = {
+  name: "",
+  path: "",
+  visiable : 1
+};
+
+export const initState: MenuState = {
   menus: [],
-  formValue: {},
+  formValue: initFormValue,
 };
 
 type MenuActionType = ActionType<typeof actions>;

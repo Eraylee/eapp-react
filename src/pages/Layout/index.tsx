@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import { Layout } from "antd";
 import { Outlet } from "react-router";
 
@@ -14,14 +14,15 @@ const { Header, Content, Footer, Sider } = Layout;
 export default () => {
   const [collapsed, setCollapsed] = useState(false);
   const { theme } = useSelector((state: AppState) => state.layoutReducer);
-  const handleToggle = useCallback(() => {
+
+  const handleToggle = () => {
     setCollapsed((v) => !v);
-  }, []);
+  };
 
   return (
-    <Layout className="layout-root">
+    <Layout className='layout-root'>
       <Sider
-        className="sider"
+        className='sider'
         theme={theme.name}
         collapsible
         collapsed={collapsed}
@@ -29,8 +30,8 @@ export default () => {
       >
         <SiderLayout themeName={theme.name} />
       </Sider>
-      <Layout className="layout">
-        <Header className="header">
+      <Layout className='layout'>
+        <Header className='header'>
           <HeaderLayout />
         </Header>
         <div style={{ height: 20 }} />

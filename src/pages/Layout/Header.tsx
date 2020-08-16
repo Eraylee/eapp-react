@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { Menu, Dropdown, Button, Select, Space, Card } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../Login/action";
@@ -17,14 +17,13 @@ export default () => {
   const { theme } = useSelector((state: AppState) => state.layoutReducer);
   const dispatch = useDispatch();
   const nav = useNavigate();
-  const handleLogout = useCallback(() => {
+  const handleLogout = () => {
     dispatch(logout());
     nav("/login");
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  const handleChangeCurrentTheme = useCallback((name) => {
+  };
+  const handleChangeCurrentTheme = (name: ThemeName) => {
     let vars = name === ThemeName.LIGHT ? lightVars : darkVars;
-    // vars = Object.assign(vars, { "@white": "#fff", "@black": "#000" });
     const theme: Theme = {
       vars,
       name,
@@ -33,7 +32,7 @@ export default () => {
     dispatch(setTheme(theme));
     window.less.modifyVars(vars).catch((error) => console.error(error));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  };
 
   const menu = (
     <Menu>

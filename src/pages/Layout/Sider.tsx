@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Menu as AMenu, Card } from "antd";
 import { MenuTypes, Menu } from "@/api/apis/system";
 import { useNavigate } from "react-router-dom";
@@ -12,8 +12,8 @@ import { ThemeName } from "./reducer";
 
 const { SubMenu, Item } = AMenu;
 
-const getIcon = (iconType: string) => {
-  return React.createElement((icons as any)[iconType]);
+const getIcon = (iconType?: string) => {
+  return iconType ? React.createElement((icons as any)[iconType]) : null;
 };
 
 export interface SiderLayoutProps {
@@ -28,28 +28,25 @@ const SiderLayout = ({ themeName }: SiderLayoutProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleClick = useCallback(
-    (params: Immutable<Menu>) => () => {
-      dispatch(
-        addTab({
-          title: params.name,
-          key: String(params.id),
-          path: params.path,
-        })
-      );
-      dispatch(setActiveKey(String(params.id)));
-      nav(params.path);
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
+  const handleClick = (params: Immutable<Menu>) => () => {
+    dispatch(
+      addTab({
+        title: params.name,
+        key: String(params.id),
+        path: params.path,
+      })
+    );
+    dispatch(setActiveKey(String(params.id)));
+    nav(params.path);
+  };
+
   const { menus } = useSelector((state: AppState) => state.layoutReducer);
   return (
-    <Card bordered={false} className="layout-sider" bodyStyle={{ padding: 0 }}>
-      <div className="logo">
+    <Card bordered={false} className='layout-sider' bodyStyle={{ padding: 0 }}>
+      <div className='logo'>
         <p>ERAYLEE</p>
       </div>
-      <AMenu mode="inline" theme={themeName}>
+      <AMenu mode='inline' theme={themeName}>
         {menus.map((v) =>
           v.type === MenuTypes.LAYOUT ? (
             <SubMenu key={v.id} title={v.name} icon={getIcon(v.icon)}>

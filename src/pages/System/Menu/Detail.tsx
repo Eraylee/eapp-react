@@ -1,57 +1,137 @@
 import React, { useEffect } from "react";
 
-import { Form, Input, Modal } from "antd";
+import { Form, Input, Modal, InputNumber } from "antd";
 import { OperateType } from "@/types";
-import { useDispatch } from "react-redux";
-import { getFormValue } from "./action";
-import ESelect, { DataSourceItem } from "@/components/Field/Eselect";
+import { useDispatch, useSelector } from "react-redux";
+import { getFormValue, setFormValue, createOrUpdate } from "./action";
+import ESelect from "@/components/Field/Eselect";
+import { AppState } from "@/store";
+import { ModalOk } from "@/hooks";
+import { ERadio, ETreeSelect } from "@/components/Field";
 
 interface DetailProps {
-  id: number;
+  id?: number;
+  confirmLoading: boolean;
   onClose: () => void;
-  onOk: () => void;
+  onOk: ModalOk;
   visible: boolean;
   operateType: OperateType;
 }
-
-const dataSource: DataSourceItem[] = [
-  {
-    label: "布局",
-    value: "1",
-  },
-  {
-    label: "接口",
-    value: "2",
-  },
-  {
-    label: "路由",
-    value: "3",
-  },
-];
-
-const Detail = ({ onClose, onOk, visible, operateType, id }: DetailProps) => {
+const layout = {
+  labelCol: { span: 4 },
+  wrapperCol: { span: 20 },
+};
+const Detail = ({
+  onClose,
+  onOk,
+  visible,
+  operateType,
+  id,
+  confirmLoading,
+}: DetailProps) => {
+  const [form] = Form.useForm();
   const dispatch = useDispatch();
+  const { formValue, menus } = useSelector(
+    (state: AppState) => state.menuReducer
+  );
+
   useEffect(() => {
-    if (operateType !== OperateType.CREATE) {
+    if (visible && operateType !== OperateType.CREATE && id) {
       dispatch(getFormValue(id));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, operateType]);
-  const [form] = Form.useForm();
+  }, [id, operateType, visible]);
+
+  useEffect(() => {
+    form.setFieldsValue(formValue);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formValue]);
+
+  const handleOk = async () => {
+    try {
+      const params = await form.validateFields();
+      return !!(await dispatch(createOrUpdate(params, id)));
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  };
+  const close = () => {
+    form.resetFields();
+    dispatch(setFormValue({}));
+    onClose();
+  };
   return (
     <>
       <Modal
+        getContainer={false}
         title='Basic Modal'
         visible={visible}
-        onOk={onOk}
-        onCancel={onClose}
+        onOk={onOk(handleOk)}
+        confirmLoading={confirmLoading}
+        onCancel={close}
       >
-        <Form form={form} layout='vertical'>
-          <Form.Item label='名称'>
+        <Form form={form} {...layout} initialValues={formValue}>
+          <Form.Item label='名称' name='name' rules={[{ required: true }]}>
             <Input placeholder='请输入' />
           </Form.Item>
-          <Form.Item label='类型'>
-            <ESelect dataSource={dataSource} />
+          <Form.Item label='类型' name='type' rules={[{ required: true }]}>
+            <ESelect
+              dataSource={[
+                {
+                  label: "布局",
+                  value: 1,
+                },
+                {
+                  label: "接口",
+                  value: 2,
+                },
+                {
+                  label: "路由",
+                  value: 3,
+                },
+              ]}
+            />
+          </Form.Item>
+          <Form.Item label='路径' name='path'>
+            <Input placeholder='请输入' />
+          </Form.Item>
+          <Form.Item label='方法' name='action'>
+            <ERadio
+              dataSource={[
+                {
+                  label: "GET",
+                  value: "GET",
+                },
+                {
+                  label: "POST",
+                  value: "POST",
+                },
+              ]}
+            />
+          </Form.Item>
+          <Form.Item label='图标' name='icon'>
+            <Input placeholder='请输入' />
+          </Form.Item>
+          <Form.Item label='父级菜单' name={["parent", "id"]}>
+            <ETreeSelect placeholder='请输入' dataSource={menus} />
+          </Form.Item>
+          <Form.Item label='排序' name='sort'>
+            <InputNumber placeholder='请输入' />
+          </Form.Item>
+          <Form.Item label='显示状态' name='visiable'>
+            <ERadio
+              dataSource={[
+                {
+                  label: "显示",
+                  value: 1,
+                },
+                {
+                  label: "隐藏",
+                  value: 2,
+                },
+              ]}
+            />
           </Form.Item>
         </Form>
       </Modal>
@@ -59,9 +139,8 @@ const Detail = ({ onClose, onOk, visible, operateType, id }: DetailProps) => {
   );
 };
 Detail.defaultProps = {
-  id: 0,
   onClose: () => {},
-  onOk: () => {},
+  confirmLoading: false,
   visible: false,
   operateType: OperateType.CREATE,
 } as DetailProps;
