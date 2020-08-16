@@ -50,7 +50,12 @@ const Detail = ({
   const handleOk = async () => {
     try {
       const params = await form.validateFields();
-      return !!(await dispatch(createOrUpdate(params, id)));
+      const isSuccess = !! await dispatch(createOrUpdate(params, id));
+      if (isSuccess) {
+        form.resetFields();
+        dispatch(setFormValue({}));
+      }
+      return isSuccess;
     } catch (error) {
       console.error(error);
       return false;
