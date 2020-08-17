@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { message } from "antd";
 import { createBrowserHistory } from "history";
+const history = createBrowserHistory();
 
 export interface Result<T> {
   code: number;
@@ -53,7 +54,6 @@ axios.interceptors.response.use(
     if (err?.response?.status === 401) {
       localStorage.removeItem("TOKEN");
       message.error(err?.response?.data?.message ?? "请重新登录");
-      const history = createBrowserHistory();
       history.push("/login");
       // window.location.reload();
     }
