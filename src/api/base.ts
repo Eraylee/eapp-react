@@ -1,7 +1,5 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { message } from "antd";
-import { createBrowserHistory } from "history";
-const history = createBrowserHistory();
 
 export interface Result<T> {
   code: number;
@@ -30,7 +28,7 @@ axios.defaults.baseURL = BASE_API;
  * request拦截器
  */
 axios.interceptors.request.use(
-  (config) => {
+  (config ) => {
     const TOKEN = localStorage.getItem("TOKEN");
     if (TOKEN) {
       config.headers.Authorization = `Bearer ${TOKEN}`;
@@ -40,7 +38,7 @@ axios.interceptors.request.use(
     return config;
   },
   (error) => {
-    return Promise.reject(error);
+    return Promise.reject(error?.response?.data);
   }
 );
 /**
@@ -54,10 +52,9 @@ axios.interceptors.response.use(
     if (err?.response?.status === 401) {
       localStorage.removeItem("TOKEN");
       message.error(err?.response?.data?.message ?? "请重新登录");
-      history.push("/login");
-      // window.location.reload();
+      window.location.reload();
     }
-    return Promise.reject(err);
+    return Promise.reject(err?.response?.data ?? err);
   }
 );
 

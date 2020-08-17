@@ -28,7 +28,7 @@ export const login = (payload: LoginReq) => async (
       return true;
     }
   } catch (error) {
-    message.error("登录失败");
+    message.error(error?.message ?? "登录失败");
   }
   return false;
 };

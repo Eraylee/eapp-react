@@ -77,6 +77,8 @@ export default () => {
     open(OperateType.EDITE);
   };
 
+  const isDisabled = selectedRowKeys.length === 0 
+
   return (
     <>
       <Card bordered={false}>
@@ -110,7 +112,7 @@ export default () => {
           <Button type='primary' onClick={() => open(OperateType.CREATE)}>
             新建
           </Button>
-          <Button onClick={handleRmoveBatch}>删除</Button>
+          <Button onClick={handleRmoveBatch} disabled={isDisabled}>删除</Button>
         </Space>
         <div style={{ height: 16 }} />
         <Table<Menu>
