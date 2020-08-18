@@ -90,6 +90,7 @@ export default () => {
     const currentTab = tabs.find((v) => v.key === key);
     if (currentTab) {
       nav(currentTab.path);
+      document.title = currentTab.title
     }
     dispatch(setActiveKey(key));
   };

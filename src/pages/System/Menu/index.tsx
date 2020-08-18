@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState, ReactText } from "react";
-import { Card, Form, Row, Col, Button, Input, Space, Table, Tag } from "antd";
+import { Card, Button, Space, Table, Tag } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { getMenuTreeData, remove } from "./action";
 import { AppState } from "@/store";
@@ -9,6 +9,7 @@ import { ColumnsType } from "antd/lib/table";
 import Detail from "./Detail";
 import { OperateType } from "@/types";
 import { useModal } from "@/hooks";
+import { EmptyView } from "@/components/EmptyView";
 
 const menuTypes: { [key: string]: string } = {
   "1": "布局",
@@ -36,13 +37,13 @@ const getColumns = (
     {
       title: "类型",
       dataIndex: "type",
-      render: (value: string) => <Tag color='blue'>{menuTypes[value]}</Tag>,
+      render: (value: string) => <Tag color="blue">{menuTypes[value]}</Tag>,
     },
     {
       title: "操作",
       dataIndex: "tableAction",
       render: (text, record) => (
-        <Space size='middle'>
+        <Space size="middle">
           <a onClick={() => onEdit(record.id)}>修改</a>
           <a onClick={() => onRomve(record.id)}>删除</a>
         </Space>
@@ -52,7 +53,6 @@ const getColumns = (
 };
 
 export default () => {
-  const [form] = Form.useForm();
   const { visible, confirmLoading, open, ok, close, operateType } = useModal();
   const [currentId, setCurrentId] = useState(0);
   // const [operateType, setOperateType] = useState(OperateType.CREATE);
@@ -77,46 +77,22 @@ export default () => {
     open(OperateType.EDITE);
   };
 
-  const isDisabled = selectedRowKeys.length === 0 
+  const isDisabled = selectedRowKeys.length === 0;
 
   return (
     <>
       <Card bordered={false}>
-        <Form form={form} name='advanced_search'>
-          <Row gutter={8}>
-            <Col span={6}>
-              <Form.Item name='name' label='名称' style={{ margin: 0 }}>
-                <Input placeholder='please input' />
-              </Form.Item>
-            </Col>
-            <Col span={6}>
-              <Space>
-                <Button type='primary' htmlType='submit'>
-                  Search
-                </Button>
-                <Button
-                  onClick={() => {
-                    form.resetFields();
-                  }}
-                >
-                  Clear
-                </Button>
-              </Space>
-            </Col>
-          </Row>
-        </Form>
-      </Card>
-      <div style={{ height: 16 }} />
-      <Card bordered={false}>
         <Space>
-          <Button type='primary' onClick={() => open(OperateType.CREATE)}>
+          <Button type="primary" onClick={() => open(OperateType.CREATE)}>
             新建
           </Button>
-          <Button onClick={handleRmoveBatch} disabled={isDisabled}>删除</Button>
+          <Button onClick={handleRmoveBatch} disabled={isDisabled}>
+            删除
+          </Button>
         </Space>
-        <div style={{ height: 16 }} />
+        <EmptyView />
         <Table<Menu>
-          rowKey='id'
+          rowKey="id"
           columns={getColumns(handleEdit, handleRemove)}
           rowSelection={{ onChange }}
           dataSource={menus as Menu[]}

@@ -37,6 +37,7 @@ const SiderLayout = ({ themeName }: SiderLayoutProps) => {
       })
     );
     dispatch(setActiveKey(String(params.id)));
+    document.title = params.name
     nav(params.path);
   };
 

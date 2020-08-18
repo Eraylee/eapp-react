@@ -6,6 +6,7 @@ import AuthorizedRoute from "@/components/AuthorizedRoute";
 
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
 const Menu = lazy(() => import("@/pages/System/Menu"));
+const User = lazy(() => import("@/pages/System/User"));
 
 export default () => {
   return useRoutes([
@@ -24,6 +25,10 @@ export default () => {
         {
           path: "system/menu",
           element: <AuthorizedRoute element={<Menu />} />,
+        },
+        {
+          path: "system/user",
+          element: <AuthorizedRoute element={<User />} />,
         },
       ],
     },

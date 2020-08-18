@@ -12,6 +12,21 @@ export enum OrderTypes {
   ASC,
 }
 
+export interface PaginationOptions {
+  pageNum: number;
+  pageSize: number;
+  orderColumn: string;
+  orderType: OrderTypes;
+}
+
+export interface PaginationResult<T> {
+  data: T[];
+  total: number;
+  pageNum: number;
+  pageSize: number;
+  maxPage: number;
+}
+
 let BASE_API = "";
 
 if (process.env.NODE_ENV !== "development") {
@@ -28,7 +43,7 @@ axios.defaults.baseURL = BASE_API;
  * request拦截器
  */
 axios.interceptors.request.use(
-  (config ) => {
+  (config) => {
     const TOKEN = localStorage.getItem("TOKEN");
     if (TOKEN) {
       config.headers.Authorization = `Bearer ${TOKEN}`;

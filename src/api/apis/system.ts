@@ -1,4 +1,4 @@
-import { GET, POST } from "../base";
+import { GET, POST, PaginationOptions, PaginationResult } from "../base";
 import { ReactText } from "react";
 
 export enum MenuTypes {
@@ -19,7 +19,7 @@ export interface Menu {
   type: number;
   path: string;
   parent: Menu;
-  parentId : number;
+  parentId: number;
   visiable: number;
   children: Menu[];
 }
@@ -53,6 +53,10 @@ export interface LoginReq {
   username: string;
   password: string;
 }
+
+export interface QueryUserReq
+  extends Partial<User>,
+    Partial<PaginationOptions> {}
 
 /**
  * 获取菜单树
@@ -91,14 +95,14 @@ export const apiSystemMenuQueryById = (id: number): Promise<Menu> => {
  * 新增菜单
  * @param params
  */
-export const apiSystemMenuCreate = (params: Partial<Menu>) => {
+export const apiSystemMenuCreate = (params: Partial<Menu>): Promise<Menu> => {
   return POST("/system/menu/create", params);
 };
 /**
  * 修改菜单
  * @param params
  */
-export const apiSystemMenuUpdate = (params: Partial<Menu>) => {
+export const apiSystemMenuUpdate = (params: Partial<Menu>): Promise<Menu> => {
   return POST("/system/menu/update", params);
 };
 /**
@@ -107,4 +111,13 @@ export const apiSystemMenuUpdate = (params: Partial<Menu>) => {
  */
 export const apiSystemMenuDelete = (ids: ReactText[]) => {
   return POST("/system/menu/delete", { ids });
+};
+/**
+ * 分页查询用户
+ * @param params
+ */
+export const apiSystemUserQueryPage = (
+  params: QueryUserReq
+): Promise<PaginationResult<User>> => {
+  return GET("/system/user/queryPage", params);
 };
