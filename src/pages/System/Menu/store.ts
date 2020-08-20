@@ -1,38 +1,50 @@
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
-  Menu,
+  apiSystemMenuGetAllTree,
+  apiSystemMenuDelete,
   apiSystemMenuQueryById,
   apiSystemMenuUpdate,
   apiSystemMenuCreate,
-  apiSystemMenuDelete,
+  Menu,
 } from "@/api/apis/system";
-import { apiSystemMenuGetAllTree } from "@/api/apis/system";
-import { Dispatch, ReactText } from "react";
 import { message } from "antd";
-import { deprecated, ActionType } from "typesafe-actions";
+import { Dispatch, ReactText } from "react";
 import produce from "immer";
-const { createAction } = deprecated;
 
-/**
- * 设置树形数据
- */
-export const setMenuTreeData = createAction(
-  "system/menu/SET_MENU_TREE",
-  (action) => {
-    return (menus: Menu[]) => action(menus);
-  }
-);
-/**
- * 初始化表单
- */
-export const setFormValue = createAction(
-  "system/menu/SET_FORM_VALUE",
-  (action) => {
-    return (menu: Partial<Menu>) => action(menu);
-  }
-);
+export interface MenuState {
+  menus: Menu[];
+  formValue: Partial<Menu>;
+}
+
+export const initialState: MenuState = {
+  menus: [],
+  formValue: {},
+};
+
+const menuSlice = createSlice({
+  name: "login",
+  initialState,
+  reducers: {
+    setMenuTreeData(state, action: PayloadAction<Menu[]>) {
+      state.menus = action.payload;
+    },
+    setFormValue(state, action: PayloadAction<Partial<Menu>>) {
+      state.formValue = action.payload;
+    },
+    clearFormValue(state) {
+      state.formValue = initialState.formValue;
+    },
+  },
+});
+
+export const {
+  setMenuTreeData,
+  setFormValue,
+  clearFormValue,
+} = menuSlice.actions;
 
 export const getMenuTreeData = () => async (
-  dispatch: Dispatch<ActionType<typeof setMenuTreeData>>
+  dispatch: Dispatch<ReturnType<typeof setMenuTreeData>>
 ) => {
   try {
     const data = await apiSystemMenuGetAllTree();
@@ -46,7 +58,7 @@ export const getMenuTreeData = () => async (
  * 获取表单详情
  */
 export const getFormValue = (id: number) => async (
-  dispatch: Dispatch<ActionType<typeof setFormValue>>
+  dispatch: Dispatch<ReturnType<typeof setFormValue>>
 ) => {
   try {
     const data = await apiSystemMenuQueryById(id);
@@ -62,13 +74,13 @@ export const getFormValue = (id: number) => async (
  */
 export const createOrUpdate = (params: Partial<Menu>, id?: number) => async (
   dispatch: Dispatch<ReturnType<typeof getMenuTreeData>>
-) =>  {
+) => {
   try {
     //有id为修改
     if (id) {
       const updateForvValue = produce(params, (p: Partial<Menu>) => {
         p.id = id;
-        p.parentId = p.parent?.id
+        p.parentId = p.parent?.id;
       });
       await apiSystemMenuUpdate(updateForvValue);
     } else {
@@ -76,11 +88,11 @@ export const createOrUpdate = (params: Partial<Menu>, id?: number) => async (
     }
     dispatch(getMenuTreeData());
     message.success(`${id ? "修改" : "新增"}成功`);
-    return true
+    return true;
   } catch (error) {
     console.error(error);
     message.error(`${id ? "修改" : "新增"}失败`);
-    return false
+    return false;
   }
 };
 
@@ -96,3 +108,5 @@ export const remove = (ids: ReactText[]) => async (
     message.error(`删除失败`);
   }
 };
+
+export default menuSlice.reducer;

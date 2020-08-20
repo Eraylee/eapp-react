@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { Form, Input, Modal, InputNumber } from "antd";
 import { OperateType } from "@/types";
 import { useDispatch, useSelector } from "react-redux";
-import { getFormValue, setFormValue, createOrUpdate } from "./action";
+import { getFormValue, setFormValue, createOrUpdate } from "./store";
 import ESelect from "@/components/Field/Eselect";
 import { AppState } from "@/store";
 import { ModalOk } from "@/hooks";
@@ -50,7 +50,7 @@ const Detail = ({
   const handleOk = async () => {
     try {
       const params = await form.validateFields();
-      const isSuccess = !! await dispatch(createOrUpdate(params, id));
+      const isSuccess = !!(await dispatch(createOrUpdate(params, id)));
       if (isSuccess) {
         form.resetFields();
         dispatch(setFormValue({}));
@@ -70,17 +70,17 @@ const Detail = ({
     <>
       <Modal
         getContainer={false}
-        title='Basic Modal'
+        title="Basic Modal"
         visible={visible}
         onOk={onOk(handleOk)}
         confirmLoading={confirmLoading}
         onCancel={close}
       >
         <Form form={form} {...layout} initialValues={formValue}>
-          <Form.Item label='名称' name='name' rules={[{ required: true }]}>
-            <Input placeholder='请输入' />
+          <Form.Item label="名称" name="name" rules={[{ required: true }]}>
+            <Input placeholder="请输入" />
           </Form.Item>
-          <Form.Item label='类型' name='type' rules={[{ required: true }]}>
+          <Form.Item label="类型" name="type" rules={[{ required: true }]}>
             <ESelect
               dataSource={[
                 {
@@ -98,10 +98,10 @@ const Detail = ({
               ]}
             />
           </Form.Item>
-          <Form.Item label='路径' name='path'>
-            <Input placeholder='请输入' />
+          <Form.Item label="路径" name="path">
+            <Input placeholder="请输入" />
           </Form.Item>
-          <Form.Item label='方法' name='action'>
+          <Form.Item label="方法" name="action">
             <ERadio
               dataSource={[
                 {
@@ -115,16 +115,16 @@ const Detail = ({
               ]}
             />
           </Form.Item>
-          <Form.Item label='图标' name='icon'>
-            <Input placeholder='请输入' />
+          <Form.Item label="图标" name="icon">
+            <Input placeholder="请输入" />
           </Form.Item>
-          <Form.Item label='父级菜单' name={["parent", "id"]}>
-            <ETreeSelect placeholder='请输入' dataSource={menus} />
+          <Form.Item label="父级菜单" name={["parent", "id"]}>
+            <ETreeSelect placeholder="请输入" dataSource={menus} />
           </Form.Item>
-          <Form.Item label='排序' name='sort'>
-            <InputNumber placeholder='请输入' />
+          <Form.Item label="排序" name="sort">
+            <InputNumber placeholder="请输入" />
           </Form.Item>
-          <Form.Item label='显示状态' name='visiable'>
+          <Form.Item label="显示状态" name="visiable">
             <ERadio
               dataSource={[
                 {

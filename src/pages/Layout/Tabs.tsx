@@ -8,16 +8,16 @@ import {
   removeAllTabs,
   removeOtherTabs,
   setActiveKey,
-} from "./action";
+  TabItem,
+} from "./store";
 import { useNavigate } from "react-router-dom";
-import { TabItem } from "./reducer";
 const { TabPane } = Tabs;
 
 export default () => {
   const dispatch = useDispatch();
   const nav = useNavigate();
   const { tabs, activeKey } = useSelector(
-    (state: AppState) => state.layoutReducer
+    (state: AppState) => state.globalReducer
   );
   //刷新之后调转到首页
   useEffect(() => {
@@ -90,7 +90,7 @@ export default () => {
     const currentTab = tabs.find((v) => v.key === key);
     if (currentTab) {
       nav(currentTab.path);
-      document.title = currentTab.title
+      document.title = currentTab.title;
     }
     dispatch(setActiveKey(key));
   };
@@ -98,10 +98,10 @@ export default () => {
   return (
     <Tabs
       hideAdd
-      className='layout-tabs-root'
-      size='small'
+      className="layout-tabs-root"
+      size="small"
       onEdit={handleEdit}
-      type='editable-card'
+      type="editable-card"
       onTabClick={handleClick}
       activeKey={activeKey}
     >
@@ -109,7 +109,7 @@ export default () => {
         <TabPane
           tab={
             <Dropdown overlay={getMenuItems(v, k)} trigger={["contextMenu"]}>
-              <Button type='text'>{v.title}</Button>
+              <Button type="text">{v.title}</Button>
             </Dropdown>
           }
           key={v.key}

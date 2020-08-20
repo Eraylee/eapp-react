@@ -2,7 +2,7 @@
 import React, { useEffect, useState, ReactText } from "react";
 import { Card, Button, Space, Table, Tag } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { getMenuTreeData, remove } from "./action";
+import { getMenuTreeData, remove } from "./store";
 import { AppState } from "@/store";
 import { Menu } from "@/api/apis/system";
 import { ColumnsType } from "antd/lib/table";

@@ -9,7 +9,7 @@ import {
 
 import "./style.less";
 import { useDispatch } from "react-redux";
-import { login } from "./action";
+import { login } from "./store";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const Login: React.FC = () => {

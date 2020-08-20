@@ -1,20 +1,19 @@
 import React from "react";
 import { Menu, Dropdown, Button, Select, Space, Card } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../Login/action";
+import { logout } from "../Login/store";
 import { useNavigate } from "react-router-dom";
 import { AppState } from "@/store";
 
 import darkVars from "@/themes/dark.json";
 import lightVars from "@/themes/light.json";
-import { Theme, ThemeName } from "./reducer";
-import { setTheme } from "./action";
+import { Theme, ThemeName, setTheme } from "./store";
 
 const Option = Select.Option;
 
 export default () => {
   const { user } = useSelector((state: AppState) => state.loginReducer);
-  const { theme } = useSelector((state: AppState) => state.layoutReducer);
+  const { theme } = useSelector((state: AppState) => state.globalReducer);
   const dispatch = useDispatch();
   const nav = useNavigate();
   const handleLogout = () => {
@@ -40,7 +39,7 @@ export default () => {
     </Menu>
   );
   return (
-    <Card bordered={false} className='header-layout'>
+    <Card bordered={false} className="header-layout">
       <Space>
         <Select
           style={{ width: 100 }}
@@ -50,7 +49,7 @@ export default () => {
           <Option value={ThemeName.LIGHT}>亮色</Option>
           <Option value={ThemeName.DARK}>暗色</Option>
         </Select>
-        <Dropdown overlay={menu} placement='bottomCenter' arrow>
+        <Dropdown overlay={menu} placement="bottomCenter" arrow>
           <Button>{user.nickname}</Button>
         </Dropdown>
       </Space>

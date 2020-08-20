@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useEffect } from "react";
-import { Card, Form, Row, Col, Button, Input, Space, Table, Tag } from "antd";
+import React from "react";
+import { Card, Form, Row, Col, Button, Input, Space, Table } from "antd";
 import { EmptyView } from "@/components/EmptyView";
 import { apiSystemUserQueryPage, User } from "@/api/apis/system";
 import { useAntdTable } from "ahooks";
@@ -55,7 +55,6 @@ export default () => {
   const { tableProps, search } = useAntdTable(getTableData, {
     form,
   });
-
 
   const { type, changeType, submit, reset } = search;
   return (

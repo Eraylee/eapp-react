@@ -6,9 +6,8 @@ import { useNavigate } from "react-router-dom";
 import * as icons from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
 import { AppState } from "@/store";
-import { getMenuTree, addTab, setActiveKey } from "./action";
+import { getMenuTree, addTab, setActiveKey, ThemeName } from "./store";
 import { Immutable } from "immer";
-import { ThemeName } from "./reducer";
 
 const { SubMenu, Item } = AMenu;
 
@@ -37,17 +36,17 @@ const SiderLayout = ({ themeName }: SiderLayoutProps) => {
       })
     );
     dispatch(setActiveKey(String(params.id)));
-    document.title = params.name
+    document.title = params.name;
     nav(params.path);
   };
 
-  const { menus } = useSelector((state: AppState) => state.layoutReducer);
+  const { menus } = useSelector((state: AppState) => state.globalReducer);
   return (
-    <Card bordered={false} className='layout-sider' bodyStyle={{ padding: 0 }}>
-      <div className='logo'>
+    <Card bordered={false} className="layout-sider" bodyStyle={{ padding: 0 }}>
+      <div className="logo">
         <p>ERAYLEE</p>
       </div>
-      <AMenu mode='inline' theme={themeName}>
+      <AMenu mode="inline" theme={themeName}>
         {menus.map((v) =>
           v.type === MenuTypes.LAYOUT ? (
             <SubMenu key={v.id} title={v.name} icon={getIcon(v.icon)}>

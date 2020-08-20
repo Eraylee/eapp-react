@@ -2,18 +2,20 @@ import React, { useState } from "react";
 import { Layout } from "antd";
 import { Outlet } from "react-router";
 
-import "./style.less";
+
 import SiderLayout from "./Sider";
 import HeaderLayout from "./Header";
 import TabsLayout from "./Tabs";
 import { AppState } from "@/store";
 import { useSelector } from "react-redux";
 
+import "./style.less";
+
 const { Header, Content, Footer, Sider } = Layout;
 
 export default () => {
   const [collapsed, setCollapsed] = useState(false);
-  const { theme } = useSelector((state: AppState) => state.layoutReducer);
+  const { theme } = useSelector((state: AppState) => state.globalReducer);
 
   const handleToggle = () => {
     setCollapsed((v) => !v);
