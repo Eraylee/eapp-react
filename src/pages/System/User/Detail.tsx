@@ -3,17 +3,22 @@ import React, { useEffect } from "react";
 import { Form, Input, Modal, InputNumber } from "antd";
 import { OperateType } from "@/types";
 import { useDispatch, useSelector } from "react-redux";
-import { getFormValue, setFormValue, createOrUpdate, clearFormValue } from "./store";
-import ESelect from "@/components/Field/Eselect";
+import {
+  getFormValue,
+  setFormValue,
+  createOrUpdate,
+  clearFormValue,
+} from "./store";
 import { AppState } from "@/store";
 import { ModalOk } from "@/hooks";
-import { ERadio, ETreeSelect } from "@/components/Field";
+import { ERadio } from "@/components/Field";
 
 interface DetailProps {
   id?: number;
   confirmLoading: boolean;
   onClose: () => void;
   onOk: ModalOk;
+  onRefresh: () => void;
   visible: boolean;
   operateType: OperateType;
 }
@@ -21,19 +26,18 @@ const layout = {
   labelCol: { span: 4 },
   wrapperCol: { span: 20 },
 };
-export const Detail = ({
+export const Detail: React.FC<DetailProps> = ({
   onClose,
   onOk,
   visible,
   operateType,
   id,
   confirmLoading,
-}: DetailProps) => {
+  onRefresh,
+}) => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
-  const { formValue, menus } = useSelector(
-    (state: AppState) => state.menuReducer
-  );
+  const { formValue } = useSelector((state: AppState) => state.userReducer);
 
   useEffect(() => {
     if (visible && operateType !== OperateType.CREATE && id) {
@@ -44,16 +48,19 @@ export const Detail = ({
 
   useEffect(() => {
     form.setFieldsValue(formValue);
+    dispatch(setFormValue(formValue))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formValue]);
 
   const handleOk = async () => {
     try {
       const params = await form.validateFields();
+      console.log("id ",id)
       const isSuccess = !!(await dispatch(createOrUpdate(params, id)));
       if (isSuccess) {
         form.resetFields();
         dispatch(clearFormValue());
+        onRefresh();
       }
       return isSuccess;
     } catch (error) {
@@ -70,29 +77,29 @@ export const Detail = ({
     <>
       <Modal
         getContainer={false}
-        title="Basic Modal"
+        title='Basic Modal'
         visible={visible}
         onOk={onOk(handleOk)}
         confirmLoading={confirmLoading}
         onCancel={close}
       >
-        <Form form={form} {...layout} initialValues={formValue}>
+        <Form form={form} {...layout}>
           <Form.Item
-            label="用户名"
-            name="username"
+            label='用户名'
+            name='username'
             rules={[{ required: true }]}
           >
-            <Input placeholder="请输入" />
+            <Input placeholder='请输入' />
           </Form.Item>
-          <Form.Item label="昵称" name="nickname" rules={[{ required: true }]}>
-            <Input placeholder="请输入" />
+          <Form.Item label='昵称' name='nickname' rules={[{ required: true }]}>
+            <Input placeholder='请输入' />
           </Form.Item>
-          <Form.Item label="手机号" name="phone">
-            <Input placeholder="请输入" />
+          <Form.Item label='手机号' name='phone'  rules={[{ required: true }]}>
+            <Input placeholder='请输入' />
           </Form.Item>
           <Form.Item
-            name="email"
-            label="邮箱"
+            name='email'
+            label='邮箱'
             rules={[
               {
                 type: "email",
@@ -100,16 +107,16 @@ export const Detail = ({
               },
             ]}
           >
-            <Input placeholder="请输入" />
+            <Input placeholder='请输入' />
           </Form.Item>
-          <Form.Item label="头像" name="avatar">
-            <Input placeholder="请输入" />
+          <Form.Item label='头像' name='avatar'>
+            <Input placeholder='请输入' />
           </Form.Item>
 
-          <Form.Item label="排序" name="sort">
-            <InputNumber placeholder="请输入" />
+          <Form.Item label='排序' name='sort'>
+            <InputNumber placeholder='请输入' />
           </Form.Item>
-          <Form.Item label="显示状态" name="visiable">
+          <Form.Item label='显示状态' name='visiable'>
             <ERadio
               dataSource={[
                 {
@@ -129,7 +136,6 @@ export const Detail = ({
   );
 };
 Detail.defaultProps = {
-  onClose: () => {},
   confirmLoading: false,
   visible: false,
   operateType: OperateType.CREATE,

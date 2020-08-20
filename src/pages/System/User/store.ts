@@ -26,7 +26,7 @@ const userSlice = createSlice({
       state.formValue = action.payload;
     },
     clearFormValue(state) {
-      state.formValue = initialState.formValue;
+      state.formValue = {};
     },
   },
 });

@@ -72,6 +72,10 @@ export default () => {
   const handleRemove = (id: number) => {
     dispatch(remove([id]));
   };
+  const handleCreate = () => {
+    setCurrentId(0);
+    open(OperateType.CREATE);
+  };
   const handleEdit = (id: number) => {
     setCurrentId(id);
     open(OperateType.EDITE);
@@ -83,7 +87,7 @@ export default () => {
     <>
       <Card bordered={false}>
         <Space>
-          <Button type="primary" onClick={() => open(OperateType.CREATE)}>
+          <Button type="primary" onClick={handleCreate}>
             新建
           </Button>
           <Button onClick={handleRmoveBatch} disabled={isDisabled}>

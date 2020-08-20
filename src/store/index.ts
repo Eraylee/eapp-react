@@ -4,12 +4,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import loginReducer from "../pages/Login/store";
 import globalReducer from "../pages/Layout/store";
 import menuReducer from "../pages/System/Menu/store";
+import userReducer from "../pages/System/User/store";
 // import { composeWithDevTools } from "redux-devtools-extension";
 
 const rootReducer = combineReducers({
   loginReducer,
   globalReducer,
   menuReducer,
+  userReducer,
 });
 
 // export const store = configureStore (rootReducer);
