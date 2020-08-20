@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.2.1",
-    "@ant-design/pro-form": "^1.0.0-beta.6",
     "@reduxjs/toolkit": "^1.4.0",
     "@sentry/react": "^5.21.1",
     "@testing-library/jest-dom": "^4.2.4",
@@ -29,8 +28,6 @@
     "react-router-dom": "^6.0.0-beta.0",
     "react-scripts": "3.4.1",
     "redux": "^4.0.5",
-    "redux-devtools-extension": "^2.13.8",
-    "redux-thunk": "^2.3.0",
     "typescript": "~3.7.2"
   },
   "scripts": {

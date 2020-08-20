@@ -1,11 +1,16 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from "react";
+import React, { ReactText, useState } from "react";
 import { Card, Form, Row, Col, Button, Input, Space, Table } from "antd";
 import { EmptyView } from "@/components/EmptyView";
 import { apiSystemUserQueryPage, User } from "@/api/apis/system";
 import { useAntdTable } from "ahooks";
+import { Detail } from "./Detail";
 import { PaginatedParams } from "ahooks/lib/useAntdTable";
 import { ColumnsType } from "antd/lib/table";
+import { useModal } from "@/hooks";
+import { remove } from "./store";
+import { useDispatch } from "react-redux";
+import { OperateType } from "@/types";
 
 const getColumns = (
   onEdit = (id: number) => {},
@@ -51,12 +56,30 @@ const getTableData = async (
 };
 
 export default () => {
+  const dispatch = useDispatch();
   const [form] = Form.useForm();
   const { tableProps, search } = useAntdTable(getTableData, {
     form,
   });
-
+  const [selectedRowKeys, setSelectedRowKeys] = useState<ReactText[]>([]);
+  const [currentId, setCurrentId] = useState(0);
+  const { visible, confirmLoading, open, ok, close, operateType } = useModal();
   const { type, changeType, submit, reset } = search;
+  const onChange = (keys: ReactText[]) => {
+    setSelectedRowKeys(keys);
+  };
+  const handleRmoveBatch = () => {
+    dispatch(remove(selectedRowKeys));
+  };
+  const handleRemove = (id: number) => {
+    dispatch(remove([id]));
+  };
+  const handleEdit = (id: number) => {
+    setCurrentId(id);
+    open(OperateType.EDITE);
+  };
+  const isDisabled = selectedRowKeys.length === 0;
+
   return (
     <>
       <Card bordered={false}>
@@ -79,11 +102,31 @@ export default () => {
         </Form>
       </Card>
       <EmptyView />
-      <Table<User>
-        rowKey="id"
-        columns={getColumns()}
-        // rowSelection={{ onChange }}
-        {...tableProps}
+      <Card bordered={false}>
+        <Space>
+          <Button type="primary" onClick={() => open(OperateType.CREATE)}>
+            新建
+          </Button>
+          <Button onClick={handleRmoveBatch} disabled={isDisabled}>
+            删除
+          </Button>
+        </Space>
+        <EmptyView />
+        <Table<User>
+          rowKey="id"
+          columns={getColumns(handleEdit, handleRemove)}
+          rowSelection={{ onChange }}
+          {...tableProps}
+        />
+      </Card>
+
+      <Detail
+        visible={visible}
+        operateType={operateType}
+        confirmLoading={confirmLoading}
+        onClose={close}
+        id={currentId}
+        onOk={ok}
       />
     </>
   );

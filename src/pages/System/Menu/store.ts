@@ -22,7 +22,7 @@ export const initialState: MenuState = {
 };
 
 const menuSlice = createSlice({
-  name: "login",
+  name: "menu",
   initialState,
   reducers: {
     setMenuTreeData(state, action: PayloadAction<Menu[]>) {

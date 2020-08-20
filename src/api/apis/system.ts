@@ -121,3 +121,31 @@ export const apiSystemUserQueryPage = (
 ): Promise<PaginationResult<User>> => {
   return GET("/system/user/queryPage", params);
 };
+/**
+ * 通过id获取菜单详情
+ * @param id
+ */
+export const apiSystemUserQueryById = (id: number): Promise<User> => {
+  return GET("/system/user/queryById", { id });
+};
+/**
+ * 创建用户
+ * @param params
+ */
+export const apiSystemUserCreate = (params: Partial<User>) => {
+  return POST("/system/user/create", params);
+};
+/**
+ * 修改用户
+ * @param params
+ */
+export const apiSystemUserUpdate = (params: Partial<User>) => {
+  return POST("/system/user/update", params);
+};
+/**
+ * 删除用户
+ * @param ids
+ */
+export const apiSystemUserDelete = (ids: ReactText[]) => {
+  return POST("/system/user/delete", { ids });
+};

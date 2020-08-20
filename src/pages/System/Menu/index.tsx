@@ -6,7 +6,7 @@ import { getMenuTreeData, remove } from "./store";
 import { AppState } from "@/store";
 import { Menu } from "@/api/apis/system";
 import { ColumnsType } from "antd/lib/table";
-import Detail from "./Detail";
+import { Detail } from "./Detail";
 import { OperateType } from "@/types";
 import { useModal } from "@/hooks";
 import { EmptyView } from "@/components/EmptyView";
