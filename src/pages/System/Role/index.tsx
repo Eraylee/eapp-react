@@ -2,7 +2,7 @@
 import React, { ReactText, useState } from "react";
 import { Card, Form, Button, Input, Space, Table } from "antd";
 import { EmptyView } from "@/components/EmptyView";
-import { apiSystemUserQueryPage, User } from "@/api/apis/system";
+import { apiSystemRoleQueryPage, Role } from "@/api/apis/system";
 import { useAntdTable } from "ahooks";
 import { Detail } from "./Detail";
 import { PaginatedParams } from "ahooks/lib/useAntdTable";
@@ -16,19 +16,15 @@ import { AdvancedSearch } from "@/components/AdvancedSearch";
 const getColumns = (
   onEdit = (id: number) => {},
   onRomve = (id: number) => {}
-): ColumnsType<User> => {
+): ColumnsType<Role> => {
   return [
     {
-      title: "用户名",
-      dataIndex: "username",
+      title: "名称",
+      dataIndex: "name",
     },
     {
-      title: "昵称",
-      dataIndex: "nickname",
-    },
-    {
-      title: "手机号",
-      dataIndex: "phone",
+      title: "编码",
+      dataIndex: "code",
     },
     {
       title: "操作",
@@ -45,10 +41,10 @@ const getColumns = (
 
 const getTableData = async (
   { current, pageSize }: PaginatedParams[0],
-  formData: Partial<User>
+  formData: Partial<Role>
 ) => {
   const params = { ...formData, pageNum: current, pageSize };
-  const res = await apiSystemUserQueryPage(params);
+  const res = await apiSystemRoleQueryPage(params);
   return {
     total: res.total,
     list: res.data,
@@ -94,16 +90,10 @@ export default () => {
       <Card bordered={false}>
         <Form form={form}>
           <AdvancedSearch onReset={reset} onSubmit={hanleSubmit}>
-            <Form.Item name="username" label="用户名">
+            <Form.Item name="name" label="名称">
               <Input placeholder="请输入" />
             </Form.Item>
-            <Form.Item name="nickname" label="昵称">
-              <Input placeholder="请输入" />
-            </Form.Item>
-            <Form.Item name="phone" label="手机号">
-              <Input placeholder="请输入" />
-            </Form.Item>
-            <Form.Item name="email" label="邮箱">
+            <Form.Item name="code" label="编码">
               <Input placeholder="请输入" />
             </Form.Item>
           </AdvancedSearch>
@@ -120,7 +110,7 @@ export default () => {
           </Button>
         </Space>
         <EmptyView />
-        <Table<User>
+        <Table<Role>
           rowKey="id"
           columns={getColumns(handleEdit, handleRemove)}
           rowSelection={{ onChange }}

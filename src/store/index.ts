@@ -5,6 +5,7 @@ import loginReducer from "../pages/Login/store";
 import globalReducer from "../pages/Layout/store";
 import menuReducer from "../pages/System/Menu/store";
 import userReducer from "../pages/System/User/store";
+import roleReducer from "../pages/System/Role/store";
 // import { composeWithDevTools } from "redux-devtools-extension";
 
 const rootReducer = combineReducers({
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   globalReducer,
   menuReducer,
   userReducer,
+  roleReducer,
 });
 
 // export const store = configureStore (rootReducer);

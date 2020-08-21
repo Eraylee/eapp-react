@@ -30,9 +30,7 @@ const Login: React.FC = () => {
     <div className='login-page-root'>
       <Card bordered={false}>
         <Form
-          name='normal_login'
           className='login-form'
-          initialValues={{ username: "", password: "" }}
           onFinish={handleLogin}
         >
           <Form.Item name='username' rules={[{ required: true }]}>
