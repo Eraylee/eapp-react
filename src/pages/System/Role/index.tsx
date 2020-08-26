@@ -57,6 +57,7 @@ export default () => {
   const { tableProps, search } = useAntdTable(getTableData, {
     form,
   });
+
   const [selectedRowKeys, setSelectedRowKeys] = useState<ReactText[]>([]);
   const [currentId, setCurrentId] = useState(0);
   const { visible, confirmLoading, open, ok, close, operateType } = useModal();
@@ -79,17 +80,13 @@ export default () => {
     setCurrentId(id);
     open(OperateType.EDITE);
   };
-  const hanleSubmit = () => {
-    console.log(form.getFieldsValue());
-    submit();
-  };
   const isDisabled = selectedRowKeys.length === 0;
 
   return (
     <>
       <Card bordered={false}>
         <Form form={form}>
-          <AdvancedSearch onReset={reset} onSubmit={hanleSubmit}>
+          <AdvancedSearch onReset={reset} onSubmit={submit}>
             <Form.Item name="name" label="名称">
               <Input placeholder="请输入" />
             </Form.Item>

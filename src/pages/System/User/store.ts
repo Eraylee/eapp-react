@@ -5,17 +5,21 @@ import {
   apiSystemUserCreate,
   apiSystemUserUpdate,
   User,
+  apiSystemRoleQueryAll,
 } from "@/api/apis/system";
 import { message } from "antd";
 import { Dispatch, ReactText } from "react";
 import produce from "immer";
+import { DataSourceItem } from "@/components/Field/Eselect";
 
 export interface UserState {
   formValue: Partial<User>;
+  roleDataSource: DataSourceItem[];
 }
 
 export const initialState: UserState = {
   formValue: {},
+  roleDataSource: [],
 };
 
 const userSlice = createSlice({
@@ -28,10 +32,17 @@ const userSlice = createSlice({
     clearFormValue(state) {
       state.formValue = {};
     },
+    setRoleDataSource(state, action: PayloadAction<DataSourceItem[]>) {
+      state.roleDataSource = action.payload;
+    },
   },
 });
 
-export const { setFormValue, clearFormValue } = userSlice.actions;
+export const {
+  setFormValue,
+  clearFormValue,
+  setRoleDataSource,
+} = userSlice.actions;
 
 /**
  * 获取表单详情
@@ -41,6 +52,9 @@ export const getFormValue = (id: number) => async (
 ) => {
   try {
     const data = await apiSystemUserQueryById(id);
+    if(data.roles?.length){
+      data.roleIds = data.roles.map( v => v.id)
+    }
     dispatch(setFormValue(data));
   } catch (error) {
     message.error("获取数据失败");
@@ -73,7 +87,10 @@ export const createOrUpdate = (params: Partial<User>, id?: number) => async (
     return false;
   }
 };
-
+/**
+ * 删除
+ * @param ids
+ */
 export const remove = (ids: ReactText[]) => async (dispatch: any) => {
   try {
     await apiSystemUserDelete(ids);
@@ -81,6 +98,23 @@ export const remove = (ids: ReactText[]) => async (dispatch: any) => {
   } catch (error) {
     console.error(error);
     message.error(`删除失败`);
+  }
+};
+/**
+ * 获取角色数据源
+ */
+export const getRoleDataSource = () => async (
+  dispatch: Dispatch<ReturnType<typeof setRoleDataSource>>
+) => {
+  try {
+    const roles = await apiSystemRoleQueryAll();
+    const dataSource: DataSourceItem[] = roles.map((v) => ({
+      label: v.name,
+      value: v.id,
+    }));
+    dispatch(setRoleDataSource(dataSource));
+  } catch (error) {
+    console.error(error);
   }
 };
 

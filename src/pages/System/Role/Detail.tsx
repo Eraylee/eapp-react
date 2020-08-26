@@ -11,7 +11,8 @@ import {
 } from "./store";
 import { AppState } from "@/store";
 import { ModalOk } from "@/hooks";
-import { ERadio } from "@/components/Field";
+import { ERadio, ETreeSelect } from "@/components/Field";
+import { getMenuTree } from "@/pages/Layout/store";
 
 interface DetailProps {
   id?: number;
@@ -38,14 +39,17 @@ export const Detail: React.FC<DetailProps> = ({
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const { formValue } = useSelector((state: AppState) => state.roleReducer);
-
+  const { menus } = useSelector((state: AppState) => state.menuReducer);
   useEffect(() => {
     if (visible && operateType !== OperateType.CREATE && id) {
       dispatch(getFormValue(id));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, operateType, visible]);
-
+  useEffect(() => {
+    dispatch(getMenuTree());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   useEffect(() => {
     form.setFieldsValue(formValue);
     dispatch(setFormValue(formValue));
@@ -55,14 +59,13 @@ export const Detail: React.FC<DetailProps> = ({
   const handleOk = async () => {
     try {
       const params = await form.validateFields();
-      console.log("id ", id);
       const isSuccess = !!(await dispatch(createOrUpdate(params, id)));
       if (isSuccess) {
         form.resetFields();
         dispatch(clearFormValue());
         onRefresh();
       }
-      return isSuccess;
+      return false;
     } catch (error) {
       console.error(error);
       return false;
@@ -90,7 +93,15 @@ export const Detail: React.FC<DetailProps> = ({
           <Form.Item label="编码" name="code" rules={[{ required: true }]}>
             <Input placeholder="请输入" />
           </Form.Item>
-
+          <Form.Item label="权限菜单" name={["menuIds"]}>
+            <ETreeSelect
+              placeholder="请输入"
+              dataSource={menus}
+              multiple
+              treeCheckable
+              treeDefaultExpandAll
+            />
+          </Form.Item>
           <Form.Item label="排序" name="sort">
             <InputNumber placeholder="请输入" />
           </Form.Item>

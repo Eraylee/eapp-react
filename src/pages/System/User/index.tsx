@@ -83,17 +83,14 @@ export default () => {
     setCurrentId(id);
     open(OperateType.EDITE);
   };
-  const hanleSubmit = () => {
-    console.log(form.getFieldsValue());
-    submit();
-  };
+
   const isDisabled = selectedRowKeys.length === 0;
 
   return (
     <>
       <Card bordered={false}>
         <Form form={form}>
-          <AdvancedSearch onReset={reset} onSubmit={hanleSubmit}>
+          <AdvancedSearch onReset={reset} onSubmit={submit}>
             <Form.Item name="username" label="用户名">
               <Input placeholder="请输入" />
             </Form.Item>

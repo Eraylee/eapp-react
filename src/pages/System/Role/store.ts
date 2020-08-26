@@ -41,6 +41,9 @@ export const getFormValue = (id: number) => async (
 ) => {
   try {
     const data = await apiSystemRoleQueryById(id);
+    if(data.menus?.length){
+      data.menuIds = data.menus.map( v => v.id)
+    }
     dispatch(setFormValue(data));
   } catch (error) {
     message.error("获取数据失败");

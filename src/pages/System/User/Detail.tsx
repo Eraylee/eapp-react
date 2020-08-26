@@ -8,10 +8,11 @@ import {
   setFormValue,
   createOrUpdate,
   clearFormValue,
+  getRoleDataSource,
 } from "./store";
 import { AppState } from "@/store";
 import { ModalOk } from "@/hooks";
-import { ERadio } from "@/components/Field";
+import { ERadio, Eselect } from "@/components/Field";
 
 interface DetailProps {
   id?: number;
@@ -37,7 +38,9 @@ export const Detail: React.FC<DetailProps> = ({
 }) => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
-  const { formValue } = useSelector((state: AppState) => state.userReducer);
+  const { formValue, roleDataSource } = useSelector(
+    (state: AppState) => state.userReducer
+  );
 
   useEffect(() => {
     if (visible && operateType !== OperateType.CREATE && id) {
@@ -48,14 +51,17 @@ export const Detail: React.FC<DetailProps> = ({
 
   useEffect(() => {
     form.setFieldsValue(formValue);
-    dispatch(setFormValue(formValue))
+    dispatch(setFormValue(formValue));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formValue]);
-
+  useEffect(() => {
+    dispatch(getRoleDataSource());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const handleOk = async () => {
     try {
       const params = await form.validateFields();
-      console.log("id ",id)
+      console.log("id ", id);
       const isSuccess = !!(await dispatch(createOrUpdate(params, id)));
       if (isSuccess) {
         form.resetFields();
@@ -77,7 +83,7 @@ export const Detail: React.FC<DetailProps> = ({
     <>
       <Modal
         getContainer={false}
-        title='Basic Modal'
+        title="Basic Modal"
         visible={visible}
         onOk={onOk(handleOk)}
         confirmLoading={confirmLoading}
@@ -85,21 +91,21 @@ export const Detail: React.FC<DetailProps> = ({
       >
         <Form form={form} {...layout}>
           <Form.Item
-            label='用户名'
-            name='username'
+            label="用户名"
+            name="username"
             rules={[{ required: true }]}
           >
-            <Input placeholder='请输入' />
+            <Input placeholder="请输入" />
           </Form.Item>
-          <Form.Item label='昵称' name='nickname' rules={[{ required: true }]}>
-            <Input placeholder='请输入' />
+          <Form.Item label="昵称" name="nickname" rules={[{ required: true }]}>
+            <Input placeholder="请输入" />
           </Form.Item>
-          <Form.Item label='手机号' name='phone'  rules={[{ required: true }]}>
-            <Input placeholder='请输入' />
+          <Form.Item label="手机号" name="phone" rules={[{ required: true }]}>
+            <Input placeholder="请输入" />
           </Form.Item>
           <Form.Item
-            name='email'
-            label='邮箱'
+            name="email"
+            label="邮箱"
             rules={[
               {
                 type: "email",
@@ -107,16 +113,23 @@ export const Detail: React.FC<DetailProps> = ({
               },
             ]}
           >
-            <Input placeholder='请输入' />
+            <Input placeholder="请输入" />
           </Form.Item>
-          <Form.Item label='头像' name='avatar'>
-            <Input placeholder='请输入' />
+          <Form.Item label="头像" name="avatar">
+            <Input placeholder="请输入" />
+          </Form.Item>
+          <Form.Item label="角色" name="roleIds">
+            <Eselect
+              placeholder="请输入"
+              mode="multiple"
+              dataSource={roleDataSource}
+            />
           </Form.Item>
 
-          <Form.Item label='排序' name='sort'>
-            <InputNumber placeholder='请输入' />
+          <Form.Item label="排序" name="sort">
+            <InputNumber placeholder="请输入" />
           </Form.Item>
-          <Form.Item label='显示状态' name='visiable'>
+          <Form.Item label="显示状态" name="visiable">
             <ERadio
               dataSource={[
                 {

@@ -32,6 +32,7 @@ export interface Role {
   updatedAt: Date;
   name: string;
   code: string;
+  menuIds?: number[];
   menus: Menu[];
 }
 
@@ -47,6 +48,7 @@ export interface User {
   phone: string;
   avatar?: string;
   roles: Role[];
+  roleIds?: number[];
 }
 
 export interface LoginReq {
@@ -172,6 +174,12 @@ export const apiSystemRoleQueryPage = (
  */
 export const apiSystemRoleQueryById = (id: number): Promise<Role> => {
   return GET("/system/role/queryById", { id });
+};
+/**
+ * 查询所有角色
+ */
+export const apiSystemRoleQueryAll = (): Promise<Role[]> => {
+  return GET("/system/role/queryAll");
 };
 /**
  * 创建角色
