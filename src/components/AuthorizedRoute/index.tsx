@@ -1,6 +1,6 @@
 import React, { useEffect, Suspense, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
-import { Spin } from "antd";
+import { Loading } from "../Loading";
 
 export interface AuthorizedRouteProps {
   element: ReactNode;
@@ -17,7 +17,7 @@ export default ({ element }: AuthorizedRouteProps) => {
   }, []);
   return (
     <>
-      <Suspense fallback={<Spin />}>{element}</Suspense>
+      <Suspense fallback={<Loading />}>{element}</Suspense>
     </>
   );
 };
