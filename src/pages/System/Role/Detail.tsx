@@ -65,7 +65,7 @@ export const Detail: React.FC<DetailProps> = ({
         dispatch(clearFormValue());
         onRefresh();
       }
-      return false;
+      return isSuccess;
     } catch (error) {
       console.error(error);
       return false;

@@ -76,7 +76,7 @@ export const Detail = ({
         confirmLoading={confirmLoading}
         onCancel={close}
       >
-        <Form form={form} {...layout} initialValues={formValue}>
+        <Form form={form} {...layout}>
           <Form.Item label="名称" name="name" rules={[{ required: true }]}>
             <Input placeholder="请输入" />
           </Form.Item>
