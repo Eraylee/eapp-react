@@ -1,5 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Menu, apiSystemMenuGetTree } from "@/api/apis/system";
+import {
+  Menu,
+  apiSystemMenuGetTree,
+  User,
+  apiSystemUserGetProfile,
+  apiSystemUserUpdateProfile,
+  UpdatePassword,
+  apiSystemUserUpdatePassword,
+} from "@/api/apis/system";
 import { Dispatch } from "react";
 import { message } from "antd";
 
@@ -24,6 +32,7 @@ export interface LayoutState {
   tabs: TabItem[];
   activeKey: string;
   theme: Theme;
+  profile: Partial<User>;
 }
 
 const initialState: LayoutState = {
@@ -31,6 +40,7 @@ const initialState: LayoutState = {
   tabs: [{ title: "首页", path: "/dashboard", key: "dashboard" }],
   theme: { vars: {}, name: ThemeName.LIGHT },
   activeKey: "dashboard",
+  profile: {},
 };
 
 const globalSlice = createSlice({
@@ -78,6 +88,10 @@ const globalSlice = createSlice({
     setTheme(state, action: PayloadAction<Theme>) {
       state.theme = action.payload;
     },
+    // 设置个人信息
+    setProfile(state, action: PayloadAction<Partial<User>>) {
+      state.profile = action.payload;
+    },
   },
 });
 
@@ -90,6 +104,7 @@ export const {
   removeOtherTabs,
   removeTab,
   setTheme,
+  setProfile,
 } = globalSlice.actions;
 
 /**
@@ -106,5 +121,47 @@ export const getMenuTree = () => async (
     message.error("初始化菜单失败");
   }
 };
-
+/**
+ * 获取个人信息
+ */
+export const getProfile = () => async (
+  dispatch: Dispatch<ReturnType<typeof setProfile>>
+) => {
+  try {
+    const profile = await apiSystemUserGetProfile();
+    dispatch(setProfile(profile));
+  } catch (error) {
+    message.error("获取个人信息失败");
+  }
+};
+/**
+ * 修改个人信息
+ * @param params
+ */
+export const updateProfile = async (
+  params: Partial<User>
+): Promise<boolean> => {
+  try {
+    await apiSystemUserUpdateProfile(params);
+    message.success("修改个人信息成功");
+    return true;
+  } catch (error) {
+    message.error("操作失败");
+    return false;
+  }
+};
+/**
+ * 修改密码
+ * @param params
+ */
+export const updatePassword = async (params: UpdatePassword) => {
+  try {
+    await apiSystemUserUpdatePassword(params);
+    message.success("修改密码成功");
+    return true;
+  } catch (error) {
+    message.error("操作失败");
+    return false;
+  }
+};
 export default globalSlice.reducer;

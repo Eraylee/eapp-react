@@ -48,7 +48,6 @@ export const getFormValue = (id: number) => async (
   } catch (error) {
     message.error("获取数据失败");
   }
-  return false;
 };
 /**
  * 新增或者修改

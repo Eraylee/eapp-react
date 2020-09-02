@@ -61,8 +61,8 @@ export const Detail: React.FC<DetailProps> = ({
   const handleOk = async () => {
     try {
       const params = await form.validateFields();
-      console.log("id ", id);
-      const isSuccess = !!(await dispatch(createOrUpdate(params, id)));
+
+      const isSuccess = await createOrUpdate(params, id);
       if (isSuccess) {
         form.resetFields();
         dispatch(clearFormValue());

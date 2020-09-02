@@ -50,6 +50,11 @@ export interface User {
   roles: Role[];
   roleIds?: number[];
 }
+export interface UpdatePassword {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
 
 export interface LoginReq {
   username: string;
@@ -158,6 +163,30 @@ export const apiSystemUserUpdate = (params: Partial<User>) => {
 export const apiSystemUserDelete = (ids: ReactText[]) => {
   return POST("/system/user/delete", { ids });
 };
+
+/**
+ * 重置密码
+ * @param id
+ */
+export const apiSystemUserResetPassword = (id: ReactText) => {
+  return POST("/system/user/resetPassword", { id });
+};
+
+/**
+ * 修改个人信息
+ * @param params
+ */
+export const apiSystemUserUpdateProfile = (params: Partial<User>) => {
+  return POST("/system/user/updateProfile", params);
+};
+/**
+ * 修改密码
+ * @param params
+ */
+export const apiSystemUserUpdatePassword = (params: UpdatePassword) => {
+  return POST("/system/user/updatePassword", params);
+};
+
 // ------------------------- 角色 --------------------------
 /**
  * 分页查询角色

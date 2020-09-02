@@ -8,8 +8,7 @@ import { Detail } from "./Detail";
 import { PaginatedParams } from "ahooks/lib/useAntdTable";
 import { ColumnsType } from "antd/lib/table";
 import { useModal } from "@/hooks";
-import { remove } from "./store";
-import { useDispatch } from "react-redux";
+import { remove, resetPassword } from "./store";
 import { OperateType } from "@/types";
 import { AdvancedSearch } from "@/components/AdvancedSearch";
 
@@ -56,7 +55,6 @@ const getTableData = async (
 };
 
 export default () => {
-  const dispatch = useDispatch();
   const [form] = Form.useForm();
   const { tableProps, search } = useAntdTable(getTableData, {
     form,
@@ -68,11 +66,16 @@ export default () => {
   const onChange = (keys: ReactText[]) => {
     setSelectedRowKeys(keys);
   };
-  const handleRmoveBatch = () => {
-    dispatch(remove(selectedRowKeys));
+  const handleRmoveBatch = async () => {
+    await remove(selectedRowKeys);
+    submit();
   };
   const handleRemove = async (id: number) => {
-    await dispatch(remove([id]));
+    await remove([id]);
+    submit();
+  };
+  const handleResetPassword = async () => {
+    await resetPassword(selectedRowKeys[0]);
     submit();
   };
   const handleCreate = () => {
@@ -83,8 +86,10 @@ export default () => {
     setCurrentId(id);
     open(OperateType.EDITE);
   };
-
-  const isDisabled = selectedRowKeys.length === 0;
+  // 删除按钮置灰
+  const isDeleteButtonDisabled = selectedRowKeys.length === 0;
+  // 重置密码按钮置灰
+  const isResetPasswordButtonDisabled = selectedRowKeys.length !== 1;
 
   return (
     <>
@@ -112,7 +117,13 @@ export default () => {
           <Button type="primary" onClick={handleCreate}>
             新建
           </Button>
-          <Button onClick={handleRmoveBatch} disabled={isDisabled}>
+          <Button
+            onClick={handleResetPassword}
+            disabled={isResetPasswordButtonDisabled}
+          >
+            重置密码
+          </Button>
+          <Button onClick={handleRmoveBatch} disabled={isDeleteButtonDisabled}>
             删除
           </Button>
         </Space>

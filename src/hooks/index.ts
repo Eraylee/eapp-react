@@ -32,5 +32,3 @@ export const useModal = () => {
 
   return { visible, confirmLoading, operateType, open, ok, close };
 };
-
-export const useTable = () => {};

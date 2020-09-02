@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { Form, Input, Modal, InputNumber } from "antd";
 import { OperateType } from "@/types";
 import { useDispatch, useSelector } from "react-redux";
-import { getFormValue, setFormValue, createOrUpdate } from "./store";
+import { getFormValue, createOrUpdate, clearFormValue } from "./store";
 import ESelect from "@/components/Field/Eselect";
 import { AppState } from "@/store";
 import { ModalOk } from "@/hooks";
@@ -53,7 +53,7 @@ export const Detail = ({
       const isSuccess = !!(await dispatch(createOrUpdate(params, id)));
       if (isSuccess) {
         form.resetFields();
-        dispatch(setFormValue({}));
+        dispatch(clearFormValue());
       }
       return isSuccess;
     } catch (error) {
@@ -63,7 +63,7 @@ export const Detail = ({
   };
   const close = () => {
     form.resetFields();
-    dispatch(setFormValue({}));
+    dispatch(clearFormValue());
     onClose();
   };
   return (
