@@ -41,8 +41,8 @@ export const getFormValue = (id: number) => async (
 ) => {
   try {
     const data = await apiSystemRoleQueryById(id);
-    if(data.menus?.length){
-      data.menuIds = data.menus.map( v => v.id)
+    if (data.menus?.length) {
+      data.menuIds = data.menus.map((v) => v.id);
     }
     dispatch(setFormValue(data));
   } catch (error) {
@@ -53,9 +53,10 @@ export const getFormValue = (id: number) => async (
  * 新增或者修改
  * @param params
  */
-export const createOrUpdate = (params: Partial<Role>, id?: number) => async (
-  dispatch: any
-) => {
+export const createOrUpdate = async (
+  params: Partial<Role>,
+  id?: number
+): Promise<boolean> => {
   try {
     //有id为修改
     if (id) {
@@ -66,7 +67,6 @@ export const createOrUpdate = (params: Partial<Role>, id?: number) => async (
     } else {
       await apiSystemRoleCreate(params);
     }
-
     message.success(`${id ? "修改" : "新增"}成功`);
     return true;
   } catch (error) {
@@ -76,7 +76,7 @@ export const createOrUpdate = (params: Partial<Role>, id?: number) => async (
   }
 };
 
-export const remove = (ids: ReactText[]) => async (dispatch: any) => {
+export const remove = async (ids: ReactText[]) => {
   try {
     await apiSystemRoleDelete(ids);
     message.success(`删除成功`);

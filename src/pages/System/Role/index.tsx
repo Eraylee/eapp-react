@@ -9,7 +9,6 @@ import { PaginatedParams } from "ahooks/lib/useAntdTable";
 import { ColumnsType } from "antd/lib/table";
 import { useModal } from "@/hooks";
 import { remove } from "./store";
-import { useDispatch } from "react-redux";
 import { OperateType } from "@/types";
 import { AdvancedSearch } from "@/components/AdvancedSearch";
 
@@ -52,7 +51,6 @@ const getTableData = async (
 };
 
 export default () => {
-  const dispatch = useDispatch();
   const [form] = Form.useForm();
   const { tableProps, search } = useAntdTable(getTableData, {
     form,
@@ -66,10 +64,11 @@ export default () => {
     setSelectedRowKeys(keys);
   };
   const handleRmoveBatch = () => {
-    dispatch(remove(selectedRowKeys));
+    remove(selectedRowKeys);
+    submit();
   };
   const handleRemove = async (id: number) => {
-    await dispatch(remove([id]));
+    await remove([id]);
     submit();
   };
   const handleCreate = () => {
