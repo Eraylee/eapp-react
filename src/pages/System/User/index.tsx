@@ -11,6 +11,7 @@ import { useModal } from "@/hooks";
 import { remove, resetPassword } from "./store";
 import { OperateType } from "@/types";
 import { AdvancedSearch } from "@/components/AdvancedSearch";
+import { DeletePopconfirm } from "@/components/Popconfirm";
 
 const getColumns = (
   onEdit = (id: number) => {},
@@ -20,6 +21,10 @@ const getColumns = (
     {
       title: "用户名",
       dataIndex: "username",
+    },
+    {
+      title: "用户编号",
+      dataIndex: "userNo",
     },
     {
       title: "昵称",
@@ -35,7 +40,7 @@ const getColumns = (
       render: (text, record) => (
         <Space size="middle">
           <a onClick={() => onEdit(record.id)}>修改</a>
-          <a onClick={() => onRomve(record.id)}>删除</a>
+          <DeletePopconfirm onClick={() => onRomve(record.id)} />
         </Space>
       ),
     },
@@ -80,14 +85,14 @@ export default () => {
   };
   const handleCreate = () => {
     setCurrentId(0);
-    open(OperateType.CREATE);
+    open(OperateType.Create);
   };
   const handleEdit = (id: number) => {
     setCurrentId(id);
-    open(OperateType.EDITE);
+    open(OperateType.Edit);
   };
   // 删除按钮置灰
-  const isDeleteButtonDisabled = selectedRowKeys.length === 0;
+  const isDeleteBatchButtonDisabled = selectedRowKeys.length === 0;
   // 重置密码按钮置灰
   const isResetPasswordButtonDisabled = selectedRowKeys.length !== 1;
 
@@ -123,7 +128,10 @@ export default () => {
           >
             重置密码
           </Button>
-          <Button onClick={handleRmoveBatch} disabled={isDeleteButtonDisabled}>
+          <Button
+            onClick={handleRmoveBatch}
+            disabled={isDeleteBatchButtonDisabled}
+          >
             删除
           </Button>
         </Space>

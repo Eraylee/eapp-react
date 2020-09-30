@@ -11,6 +11,7 @@ import { useModal } from "@/hooks";
 import { remove } from "./store";
 import { OperateType } from "@/types";
 import { AdvancedSearch } from "@/components/AdvancedSearch";
+import { DeletePopconfirm } from "@/components/Popconfirm";
 
 const getColumns = (
   onEdit = (id: number) => {},
@@ -31,7 +32,7 @@ const getColumns = (
       render: (text, record) => (
         <Space size="middle">
           <a onClick={() => onEdit(record.id)}>修改</a>
-          <a onClick={() => onRomve(record.id)}>删除</a>
+          <DeletePopconfirm onClick={() => onRomve(record.id)} />
         </Space>
       ),
     },
@@ -73,11 +74,11 @@ export default () => {
   };
   const handleCreate = () => {
     setCurrentId(0);
-    open(OperateType.CREATE);
+    open(OperateType.Create);
   };
   const handleEdit = (id: number) => {
     setCurrentId(id);
-    open(OperateType.EDITE);
+    open(OperateType.Edit);
   };
   const isDisabled = selectedRowKeys.length === 0;
 

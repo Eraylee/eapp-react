@@ -44,6 +44,7 @@ export interface User {
   updatedAt: Date;
   username: string;
   nickname: string;
+  useNo: string;
   email: string;
   phone: string;
   avatar?: string;
@@ -61,13 +62,26 @@ export interface LoginReq {
   password: string;
 }
 
-export interface QueryUserReq
-  extends Partial<User>,
-    Partial<PaginationOptions> {}
+export interface DataDictionary {
+  dictionaryCode: string;
+  dictionaryName: string;
+  dictionaryValue: string;
+  description?: string;
+  parentId?: number;
+  id: number;
+  sort: number;
+  enabled: number;
+  createdAt: Date;
+  updatedAt: Date;
+  children: DataDictionary[];
+}
 
-export interface QueryRoleReq
-  extends Partial<Role>,
-    Partial<PaginationOptions> {}
+export type QueryUserReq = Partial<User> & Partial<PaginationOptions>;
+
+export type QueryRoleReq = Partial<Role> & Partial<PaginationOptions>;
+
+export type QueryDataDictionaryReq = Partial<DataDictionary> &
+  Partial<PaginationOptions>;
 
 // ------------------------- 鉴权 --------------------------
 /**
@@ -116,8 +130,8 @@ export const apiSystemMenuUpdate = (params: Partial<Menu>): Promise<Menu> => {
  * 删除菜单
  * @param ids
  */
-export const apiSystemMenuDelete = (ids: ReactText[]) => {
-  return POST("/system/menu/delete", { ids });
+export const apiSystemMenuDeleteBatch = (ids: ReactText[]) => {
+  return POST("/system/menu/deleteBatch", { ids });
 };
 // ------------------------- 用户 --------------------------
 /**
@@ -160,8 +174,8 @@ export const apiSystemUserUpdate = (params: Partial<User>) => {
  * 删除用户
  * @param ids
  */
-export const apiSystemUserDelete = (ids: ReactText[]) => {
-  return POST("/system/user/delete", { ids });
+export const apiSystemUserDeleteBatch = (ids: ReactText[]) => {
+  return POST("/system/user/deleteBatch", { ids });
 };
 
 /**
@@ -228,6 +242,59 @@ export const apiSystemRoleUpdate = (params: Partial<Role>) => {
  * 删除角色
  * @param ids
  */
-export const apiSystemRoleDelete = (ids: ReactText[]) => {
-  return POST("/system/role/delete", { ids });
+export const apiSystemRoleDeleteBatch = (ids: ReactText[]) => {
+  return POST("/system/role/deleteBatch", { ids });
+};
+
+// ------------------------- 数据字典 --------------------------
+/**
+ * 分页查询数据字典
+ * @param params
+ */
+export const apiSystemDataDictionaryQueryPage = (
+  params: QueryDataDictionaryReq
+): Promise<PaginationResult<DataDictionary>> => {
+  return GET("/system/dataDictionary/queryPage", params);
+};
+/**
+ * 通过id查询数据字典
+ * @param id
+ */
+export const apiSystemDataDictionaryQueryById = (
+  id: number
+): Promise<DataDictionary> => {
+  return GET("/system/dataDictionary/queryById", { id });
+};
+/**
+ * 创建数据字典
+ * @param params
+ */
+export const apiSystemDataDictionaryCreate = (
+  params: Partial<DataDictionary>
+) => {
+  return POST("/system/dataDictionary/create", params);
+};
+/**
+ * 修改数据字典
+ * @param params
+ */
+export const apiSystemDataDictionaryUpdate = (
+  params: Partial<DataDictionary>
+) => {
+  return POST("/system/dataDictionary/update", params);
+};
+/**
+ * 删除数据字典
+ * @param ids
+ */
+export const apiSystemDataDictionaryDeleteBatch = (ids: ReactText[]) => {
+  return POST("/system/dataDictionary/deleteBatch", { ids });
+};
+/**
+ * 获取所有数据字典树
+ */
+export const apiSystemDataDictionaryGetAllTree = (): Promise<
+  DataDictionary[]
+> => {
+  return GET("/system/dataDictionary/getAllTree");
 };

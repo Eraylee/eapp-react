@@ -10,6 +10,7 @@ const Menu = lazy(() => import("@/pages/System/Menu"));
 const User = lazy(() => import("@/pages/System/User"));
 const Role = lazy(() => import("@/pages/System/Role"));
 const LoginInfo = lazy(() => import("@/pages/Log/LoginInfo"));
+const DataDictionary = lazy(() => import("@/pages/System/DataDictionary"));
 
 export default () => {
   return useRoutes([
@@ -40,6 +41,10 @@ export default () => {
         {
           path: "log/loginInfo",
           element: <AuthorizedRoute element={<LoginInfo />} />,
+        },
+        {
+          path: "system/dataDictionary",
+          element: <AuthorizedRoute element={<DataDictionary />} />,
         },
         {
           path: "*",

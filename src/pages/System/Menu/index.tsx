@@ -10,6 +10,7 @@ import { Detail } from "./Detail";
 import { OperateType } from "@/types";
 import { useModal } from "@/hooks";
 import { EmptyView } from "@/components/EmptyView";
+import { DeletePopconfirm } from "@/components/Popconfirm";
 
 const menuTypes: { [key: string]: string } = {
   "1": "布局",
@@ -45,7 +46,7 @@ const getColumns = (
       render: (text, record) => (
         <Space size="middle">
           <a onClick={() => onEdit(record.id)}>修改</a>
-          <a onClick={() => onRomve(record.id)}>删除</a>
+          <DeletePopconfirm onClick={() => onRomve(record.id)} />
         </Space>
       ),
     },
@@ -55,7 +56,7 @@ const getColumns = (
 export default () => {
   const { visible, confirmLoading, open, ok, close, operateType } = useModal();
   const [currentId, setCurrentId] = useState(0);
-  // const [operateType, setOperateType] = useState(OperateType.CREATE);
+  // const [operateType, setOperateType] = useState(OperateType.Create);
   const [selectedRowKeys, setSelectedRowKeys] = useState<ReactText[]>([]);
   const dispatch = useDispatch();
   const { menus } = useSelector((state: AppState) => state.menuReducer);
@@ -74,11 +75,11 @@ export default () => {
   };
   const handleCreate = () => {
     setCurrentId(0);
-    open(OperateType.CREATE);
+    open(OperateType.Create);
   };
   const handleEdit = (id: number) => {
     setCurrentId(id);
-    open(OperateType.EDITE);
+    open(OperateType.Edit);
   };
 
   const isDisabled = selectedRowKeys.length === 0;

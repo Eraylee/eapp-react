@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   apiSystemMenuGetAllTree,
-  apiSystemMenuDelete,
+  apiSystemMenuDeleteBatch,
   apiSystemMenuQueryById,
   apiSystemMenuUpdate,
   apiSystemMenuCreate,
@@ -22,7 +22,7 @@ export const initialState: MenuState = {
 };
 
 const menuSlice = createSlice({
-  name: "menu",
+  name: "systemMenu",
   initialState,
   reducers: {
     setMenuTreeData(state, action: PayloadAction<Menu[]>) {
@@ -100,7 +100,7 @@ export const remove = (ids: ReactText[]) => async (
   dispatch: Dispatch<ReturnType<typeof getMenuTreeData>>
 ) => {
   try {
-    await apiSystemMenuDelete(ids);
+    await apiSystemMenuDeleteBatch(ids);
     dispatch(getMenuTreeData());
     message.success(`删除成功`);
   } catch (error) {

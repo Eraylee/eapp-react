@@ -13,6 +13,7 @@ import {
 import { AppState } from "@/store";
 import { ModalOk } from "@/hooks";
 import { ERadio, Eselect } from "@/components/Field";
+import { statusDataSource } from "@/common/dataSoures";
 
 interface DetailProps {
   id?: number;
@@ -43,7 +44,7 @@ export const Detail: React.FC<DetailProps> = ({
   );
 
   useEffect(() => {
-    if (visible && operateType !== OperateType.CREATE && id) {
+    if (visible && operateType !== OperateType.Create && id) {
       dispatch(getFormValue(id));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -83,7 +84,7 @@ export const Detail: React.FC<DetailProps> = ({
     <>
       <Modal
         getContainer={false}
-        title="Basic Modal"
+        title='用户'
         visible={visible}
         onOk={onOk(handleOk)}
         confirmLoading={confirmLoading}
@@ -91,21 +92,28 @@ export const Detail: React.FC<DetailProps> = ({
       >
         <Form form={form} {...layout}>
           <Form.Item
-            label="用户名"
-            name="username"
+            label='用户名'
+            name='username'
             rules={[{ required: true }]}
           >
-            <Input placeholder="请输入" />
+            <Input placeholder='请输入' />
           </Form.Item>
-          <Form.Item label="昵称" name="nickname" rules={[{ required: true }]}>
-            <Input placeholder="请输入" />
+          <Form.Item label='昵称' name='nickname' rules={[{ required: true }]}>
+            <Input placeholder='请输入' />
           </Form.Item>
-          <Form.Item label="手机号" name="phone" rules={[{ required: true }]}>
-            <Input placeholder="请输入" />
+          <Form.Item label='手机号' name='phone' rules={[{ required: true }]}>
+            <Input placeholder='请输入' />
           </Form.Item>
           <Form.Item
-            name="email"
-            label="邮箱"
+            label='用户编号'
+            name='userNo'
+            rules={[{ required: true }]}
+          >
+            <Input placeholder='请输入' />
+          </Form.Item>
+          <Form.Item
+            name='email'
+            label='邮箱'
             rules={[
               {
                 type: "email",
@@ -113,35 +121,24 @@ export const Detail: React.FC<DetailProps> = ({
               },
             ]}
           >
-            <Input placeholder="请输入" />
+            <Input placeholder='请输入' />
           </Form.Item>
-          <Form.Item label="头像" name="avatar">
-            <Input placeholder="请输入" />
+          <Form.Item label='头像' name='avatar'>
+            <Input placeholder='请输入' />
           </Form.Item>
-          <Form.Item label="角色" name="roleIds">
+          <Form.Item label='角色' name='roleIds'>
             <Eselect
-              placeholder="请输入"
-              mode="multiple"
+              placeholder='请输入'
+              mode='multiple'
               dataSource={roleDataSource}
             />
           </Form.Item>
 
-          <Form.Item label="排序" name="sort">
-            <InputNumber placeholder="请输入" />
+          <Form.Item label='排序' name='sort'>
+            <InputNumber placeholder='请输入' />
           </Form.Item>
-          <Form.Item label="显示状态" name="visiable">
-            <ERadio
-              dataSource={[
-                {
-                  label: "显示",
-                  value: 1,
-                },
-                {
-                  label: "隐藏",
-                  value: 2,
-                },
-              ]}
-            />
+          <Form.Item label='启用状态' name='status'>
+            <ERadio dataSource={statusDataSource} />
           </Form.Item>
         </Form>
       </Modal>
@@ -151,5 +148,5 @@ export const Detail: React.FC<DetailProps> = ({
 Detail.defaultProps = {
   confirmLoading: false,
   visible: false,
-  operateType: OperateType.CREATE,
+  operateType: OperateType.Create,
 } as DetailProps;

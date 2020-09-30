@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
-  apiSystemUserDelete,
+  apiSystemUserDeleteBatch,
   apiSystemUserQueryById,
   apiSystemUserCreate,
   apiSystemUserUpdate,
@@ -24,7 +24,7 @@ export const initialState: UserState = {
 };
 
 const userSlice = createSlice({
-  name: "user",
+  name: "systemUser",
   initialState,
   reducers: {
     setFormValue(state, action: PayloadAction<Partial<User>>) {
@@ -92,7 +92,7 @@ export const createOrUpdate = async (params: Partial<User>, id?: number) => {
  */
 export const remove = async (ids: ReactText[]) => {
   try {
-    await apiSystemUserDelete(ids);
+    await apiSystemUserDeleteBatch(ids);
     message.success(`删除成功`);
   } catch (error) {
     console.error(error);

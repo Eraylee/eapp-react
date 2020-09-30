@@ -3,8 +3,13 @@ import React, { useEffect } from "react";
 import { Form, Input, Modal, InputNumber } from "antd";
 import { OperateType } from "@/types";
 import { useDispatch, useSelector } from "react-redux";
-import { getFormValue, createOrUpdate, clearFormValue } from "./store";
-import ESelect from "@/components/Field/Eselect";
+import {
+  getFormValue,
+  setFormValue,
+  createOrUpdate,
+  clearFormValue,
+  getDataDictionaryTree,
+} from "./store";
 import { AppState } from "@/store";
 import { ModalOk } from "@/hooks";
 import { ERadio, ETreeSelect } from "@/components/Field";
@@ -14,25 +19,29 @@ interface DetailProps {
   confirmLoading: boolean;
   onClose: () => void;
   onOk: ModalOk;
+  onRefresh: () => void;
   visible: boolean;
   operateType: OperateType;
 }
+
 const layout = {
   labelCol: { span: 4 },
   wrapperCol: { span: 20 },
 };
-export const Detail = ({
+
+export const Detail: React.FC<DetailProps> = ({
   onClose,
   onOk,
   visible,
   operateType,
   id,
   confirmLoading,
-}: DetailProps) => {
+  onRefresh,
+}) => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
-  const { formValue, menus } = useSelector(
-    (state: AppState) => state.menuReducer
+  const { formValue, treeData } = useSelector(
+    (state: AppState) => state.dataDictionarySlice
   );
 
   useEffect(() => {
@@ -44,16 +53,19 @@ export const Detail = ({
 
   useEffect(() => {
     form.setFieldsValue(formValue);
+    dispatch(setFormValue(formValue));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formValue]);
 
   const handleOk = async () => {
     try {
       const params = await form.validateFields();
-      const isSuccess = !!(await dispatch(createOrUpdate(params, id)));
+      const isSuccess = await createOrUpdate(params, id);
       if (isSuccess) {
         form.resetFields();
         dispatch(clearFormValue());
+        dispatch(getDataDictionaryTree());
+        onRefresh();
       }
       return isSuccess;
     } catch (error) {
@@ -70,56 +82,39 @@ export const Detail = ({
     <>
       <Modal
         getContainer={false}
-        title="菜单"
+        title="数据字典"
         visible={visible}
         onOk={onOk(handleOk)}
         confirmLoading={confirmLoading}
         onCancel={close}
       >
         <Form form={form} {...layout}>
-          <Form.Item label="名称" name="name" rules={[{ required: true }]}>
+          <Form.Item
+            label="字典名称"
+            name="dictionaryName"
+            rules={[{ required: true }]}
+          >
             <Input placeholder="请输入" />
           </Form.Item>
-          <Form.Item label="类型" name="type" rules={[{ required: true }]}>
-            <ESelect
-              dataSource={[
-                {
-                  label: "布局",
-                  value: 1,
-                },
-                {
-                  label: "接口",
-                  value: 2,
-                },
-                {
-                  label: "路由",
-                  value: 3,
-                },
-              ]}
-            />
-          </Form.Item>
-          <Form.Item label="路径" name="path">
+          <Form.Item
+            label="字典编码"
+            name="dictionaryCode"
+            rules={[{ required: true }]}
+          >
             <Input placeholder="请输入" />
           </Form.Item>
-          <Form.Item label="方法" name="action">
-            <ERadio
-              dataSource={[
-                {
-                  label: "GET",
-                  value: "GET",
-                },
-                {
-                  label: "POST",
-                  value: "POST",
-                },
-              ]}
-            />
+          <Form.Item
+            label="字典值"
+            name="dictionaryValue"
+            rules={[{ required: true }]}
+          >
+            <Input placeholder="请输入" />
           </Form.Item>
-          <Form.Item label="图标" name="icon">
+          <Form.Item label="描述" name="description">
             <Input placeholder="请输入" />
           </Form.Item>
           <Form.Item label="父级菜单" name={["parent", "id"]}>
-            <ETreeSelect placeholder="请输入" dataSource={menus} />
+            <ETreeSelect placeholder="请输入" dataSource={treeData} />
           </Form.Item>
           <Form.Item label="排序" name="sort">
             <InputNumber placeholder="请输入" />
@@ -144,7 +139,6 @@ export const Detail = ({
   );
 };
 Detail.defaultProps = {
-  onClose: () => {},
   confirmLoading: false,
   visible: false,
   operateType: OperateType.Create,

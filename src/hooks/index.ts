@@ -7,7 +7,7 @@ export type ModalOk = (
 
 export const useModal = () => {
   const [visible, setVisible] = useState(false);
-  const [operateType, setOperateType] = useState(OperateType.CREATE);
+  const [operateType, setOperateType] = useState(OperateType.Create);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
   const open = (type?: OperateType) => {
