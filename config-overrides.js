@@ -40,6 +40,7 @@ const options = {
       ...Object.keys(themeVariables),
     ])
   ),
+  lessUrl: "https://cdn.bootcss.com/less.js/2.5.3/less.min.js",
   generateOnce: false, // generate color.less on each compilation
 };
 
